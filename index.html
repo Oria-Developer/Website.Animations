@@ -6,166 +6,344 @@
     <title>Lakeview Comms CAD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== CSS VARIABLES ===== */
         :root {
+            /* Primary Colors */
             --primary: #A2161C;
-            --primary-dark: #A2171E;
+            --primary-dark: #8A1318;
+            --primary-light: #B82A30;
+            --primary-transparent: rgba(162, 22, 28, 0.1);
+            
+            /* Neutral Colors */
             --secondary: #010101;
             --accent: #1A1A1A;
             --card-bg: #121212;
             --light: #F5F5F5;
             --gray: #8A8A8A;
+            --gray-dark: #555;
+            --gray-light: #AAA;
+            
+            /* Status Colors */
             --success: #10b981;
+            --success-dark: #059669;
             --warning: #f59e0b;
+            --warning-dark: #d97706;
             --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --info: #3b82f6;
+            --info-dark: #1d4ed8;
+            
+            /* UI Elements */
             --border: #333;
+            --border-light: #444;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.5);
+            
+            /* Typography */
+            --font-xs: 0.75rem;
+            --font-sm: 0.875rem;
+            --font-base: 1rem;
+            --font-lg: 1.125rem;
+            --font-xl: 1.25rem;
+            --font-2xl: 1.5rem;
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-md: 0.625rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            
+            /* Transitions */
+            --transition: all 0.2s ease;
+            --transition-slow: all 0.3s ease;
         }
 
+        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--secondary);
             color: var(--light);
+            line-height: 1.6;
             overflow: hidden;
             height: 100vh;
-            font-size: 13px;
+            font-size: var(--font-base);
         }
 
-        /* Beta Badge - Compact */
-        .beta-badge {
-            position: fixed;
-            top: 5px;
-            left: 5px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            z-index: 3000;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        /* ===== UTILITY CLASSES ===== */
+        .text-xs { font-size: var(--font-xs); }
+        .text-sm { font-size: var(--font-sm); }
+        .text-lg { font-size: var(--font-lg); }
+        .text-xl { font-size: var(--font-xl); }
+        .text-2xl { font-size: var(--font-2xl); }
+        
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        
+        .font-light { font-weight: 300; }
+        .font-normal { font-weight: 400; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        
+        .text-primary { color: var(--primary); }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        .text-info { color: var(--info); }
+        .text-gray { color: var(--gray); }
+        .text-light { color: var(--light); }
+        
+        .bg-primary { background: var(--primary); }
+        .bg-success { background: var(--success); }
+        .bg-warning { background: var(--warning); }
+        .bg-danger { background: var(--danger); }
+        .bg-info { background: var(--info); }
+        .bg-card { background: var(--card-bg); }
+        .bg-accent { background: var(--accent); }
+        
+        .border { border: 1px solid var(--border); }
+        .border-light { border: 1px solid var(--border-light); }
+        .border-primary { border: 1px solid var(--primary); }
+        
+        .rounded { border-radius: var(--radius); }
+        .rounded-lg { border-radius: var(--radius-lg); }
+        .rounded-xl { border-radius: var(--radius-xl); }
+        
+        .shadow { box-shadow: var(--shadow); }
+        .shadow-lg { box-shadow: var(--shadow-lg); }
+        .shadow-xl { box-shadow: var(--shadow-xl); }
+        
+        .p-1 { padding: var(--space-1); }
+        .p-2 { padding: var(--space-2); }
+        .p-3 { padding: var(--space-3); }
+        .p-4 { padding: var(--space-4); }
+        .p-5 { padding: var(--space-5); }
+        .p-6 { padding: var(--space-6); }
+        
+        .px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
+        .px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
+        .px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+        
+        .py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
+        .py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
+        .py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+        
+        .m-1 { margin: var(--space-1); }
+        .m-2 { margin: var(--space-2); }
+        .m-3 { margin: var(--space-3); }
+        .m-4 { margin: var(--space-4); }
+        
+        .mx-2 { margin-left: var(--space-2); margin-right: var(--space-2); }
+        .mx-3 { margin-left: var(--space-3); margin-right: var(--space-3); }
+        .mx-4 { margin-left: var(--space-4); margin-right: var(--space-4); }
+        
+        .my-2 { margin-top: var(--space-2); margin-bottom: var(--space-2); }
+        .my-3 { margin-top: var(--space-3); margin-bottom: var(--space-3); }
+        .my-4 { margin-top: var(--space-4); margin-bottom: var(--space-4); }
+        
+        .mt-1 { margin-top: var(--space-1); }
+        .mt-2 { margin-top: var(--space-2); }
+        .mt-3 { margin-top: var(--space-3); }
+        .mt-4 { margin-top: var(--space-4); }
+        
+        .mb-1 { margin-bottom: var(--space-1); }
+        .mb-2 { margin-bottom: var(--space-2); }
+        .mb-3 { margin-bottom: var(--space-3); }
+        .mb-4 { margin-bottom: var(--space-4); }
+        
+        .ml-1 { margin-left: var(--space-1); }
+        .ml-2 { margin-left: var(--space-2); }
+        .ml-3 { margin-left: var(--space-3); }
+        
+        .mr-1 { margin-right: var(--space-1); }
+        .mr-2 { margin-right: var(--space-2); }
+        .mr-3 { margin-right: var(--space-3); }
+        
+        .flex { display: flex; }
+        .inline-flex { display: inline-flex; }
+        .flex-col { flex-direction: column; }
+        .flex-row { flex-direction: row; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .items-end { align-items: flex-end; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-start { justify-content: flex-start; }
+        .justify-end { justify-content: flex-end; }
+        .flex-1 { flex: 1; }
+        .flex-wrap { flex-wrap: wrap; }
+        .gap-1 { gap: var(--space-1); }
+        .gap-2 { gap: var(--space-2); }
+        .gap-3 { gap: var(--space-3); }
+        .gap-4 { gap: var(--space-4); }
+        
+        .hidden { display: none; }
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .w-auto { width: auto; }
+        .h-auto { height: auto; }
+        
+        .cursor-pointer { cursor: pointer; }
+        .cursor-default { cursor: default; }
+        
+        .transition { transition: var(--transition); }
+        .transition-slow { transition: var(--transition-slow); }
+        
+        .opacity-50 { opacity: 0.5; }
+        .opacity-75 { opacity: 0.75; }
+        
+        .overflow-hidden { overflow: hidden; }
+        .overflow-auto { overflow: auto; }
+        .overflow-y-auto { overflow-y: auto; }
+        .overflow-x-auto { overflow-x: auto; }
+        
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .sticky { position: sticky; }
+        
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .z-30 { z-index: 30; }
+        .z-40 { z-index: 40; }
+        .z-50 { z-index: 50; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Login Screen - More Compact */
-        .login-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-            padding: 10px;
-            background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .login-logo {
-            width: 100px;
-            margin-bottom: 15px;
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .login-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            width: 100%;
-            max-width: 350px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
         }
 
-        .login-title {
-            font-size: 1.3rem;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
-        .login-subtitle {
-            color: var(--gray);
-            margin-bottom: 15px;
-            font-size: 0.8rem;
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        .login-warning {
-            background: rgba(162, 22, 28, 0.1);
-            border-left: 3px solid var(--primary);
-            padding: 8px;
-            margin-bottom: 15px;
-            text-align: left;
-            border-radius: 4px;
-            font-size: 0.75rem;
+        @keyframes alertFlash {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
         }
 
-        .form-group {
-            margin-bottom: 12px;
-            text-align: left;
+        @keyframes priorityGlow {
+            0%, 100% { box-shadow: 0 0 5px var(--primary); }
+            50% { box-shadow: 0 0 20px var(--primary); }
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: var(--light);
+        .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+        .animate-slideIn { animation: slideIn 0.3s ease-out; }
+        .animate-slideInRight { animation: slideInRight 0.3s ease-out; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        .animate-bounce { animation: bounce 1s infinite; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .animate-alertFlash { animation: alertFlash 2s infinite; }
+        .animate-priorityGlow { animation: priorityGlow 2s infinite; }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        .form-input, .form-select {
-            width: 100%;
-            padding: 8px;
+        ::-webkit-scrollbar-track {
             background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            color: white;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
+            border-radius: var(--radius);
         }
 
-        .login-btn {
-            width: 100%;
-            padding: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 6px;
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: var(--radius);
+            transition: var(--transition);
         }
 
-        /* CAD App - More Compact */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== LAYOUT COMPONENTS ===== */
         .app-container {
-            display: none;
-            grid-template-rows: 50px 1fr;
+            display: grid;
+            grid-template-rows: 60px 1fr;
             height: 100vh;
             gap: 0;
         }
 
-        /* Header - More Compact */
-        header {
+        .main-content {
+            display: grid;
+            grid-template-columns: 320px 1fr 320px;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            height: calc(100vh - 60px);
+            overflow: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
             background: var(--card-bg);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 15px;
-            height: 50px;
+            padding: 0 var(--space-5);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
         }
 
         .logo {
-            height: 22px;
+            height: 32px;
             width: auto;
         }
 
         .title {
-            font-size: 1rem;
+            font-size: var(--font-xl);
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             -webkit-background-clip: text;
@@ -175,14 +353,16 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: var(--space-4);
         }
 
         .status-indicator {
-            width: 8px;
-            height: 8px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 2s infinite;
         }
 
         .user-details {
@@ -193,231 +373,367 @@
 
         .user-id {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: var(--font-sm);
         }
 
         .shift-time {
-            font-size: 0.7rem;
+            font-size: var(--font-xs);
             color: var(--gray);
         }
 
         .sign-out-btn {
-            padding: 4px 8px;
-            background: rgba(162, 22, 28, 0.15);
+            padding: var(--space-2) var(--space-3);
+            background: var(--primary-transparent);
             color: var(--light);
             border: 1px solid var(--primary);
-            border-radius: 4px;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-size: 0.75rem;
-            transition: all 0.3s ease;
-        }
-
-        /* Tools Button - Smaller */
-        .tools-btn {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.9rem;
-            box-shadow: 0 3px 10px rgba(162, 22, 28, 0.4);
-            z-index: 100;
-            transition: all 0.3s ease;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Tools Panel - More Compact */
-        .tools-panel {
-            position: fixed;
-            bottom: 55px;
-            right: 15px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 15px;
-            width: 250px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            z-index: 100;
-            display: none;
-        }
-
-        .tools-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .tools-title {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .close-tools {
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-
-        .tools-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .tool-option {
-            padding: 10px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: var(--font-sm);
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
+            gap: var(--space-2);
         }
 
-        /* Main Content - More Compact */
-        .main-content {
-            display: grid;
-            grid-template-columns: 280px 1fr 280px;
-            gap: 10px;
-            padding: 10px;
-            height: calc(100vh - 50px);
-            overflow: hidden;
+        .sign-out-btn:hover {
+            background: var(--primary);
+            transform: translateY(-1px);
         }
 
+        /* ===== PANELS ===== */
         .panel {
             background: var(--card-bg);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
             overflow-y: auto;
             border: 1px solid var(--border);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
         }
 
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-3);
             border-bottom: 1px solid var(--border);
         }
 
         .panel-title {
-            font-size: 0.9rem;
+            font-size: var(--font-lg);
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: var(--space-2);
+        }
+
+        .panel-title i {
+            color: var(--primary);
         }
 
         .panel-actions {
             display: flex;
-            gap: 6px;
+            gap: var(--space-2);
         }
 
+        /* ===== BUTTONS ===== */
         .btn {
-            padding: 6px 10px;
+            padding: var(--space-3) var(--space-4);
             border: none;
-            border-radius: 5px;
+            border-radius: var(--radius);
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: var(--font-sm);
             display: flex;
             align-items: center;
-            gap: 4px;
-            transition: all 0.3s ease;
+            gap: var(--space-2);
+            transition: var(--transition);
             font-weight: 500;
+            text-decoration: none;
         }
 
-        /* Call List - More Compact */
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(162, 22, 28, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-sm {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-xs);
+        }
+
+        .btn-lg {
+            padding: var(--space-4) var(--space-5);
+            font-size: var(--font-base);
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info) 0%, var(--info-dark) 100%);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            border: 1px solid var(--border);
+            color: var(--light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-transparent);
+            border-color: var(--primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Priority Button Animation */
+        .priority-btn {
+            animation: spectrum 3s infinite;
+        }
+
+        @keyframes spectrum {
+            0% { background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%); }
+            25% { background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%); }
+            50% { background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%); }
+            75% { background: linear-gradient(135deg, var(--info) 0%, var(--info-dark) 100%); }
+            100% { background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%); }
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: 600;
+            font-size: var(--font-sm);
+            color: var(--light);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: white;
+            font-size: var(--font-sm);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(162, 22, 28, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            cursor: pointer;
+        }
+
+        .form-checkbox input {
+            width: auto;
+        }
+
+        .form-radio-group {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        .form-radio {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            cursor: pointer;
+        }
+
+        /* ===== CALL LIST ===== */
+        .call-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            flex: 1;
+        }
+
         .call-item {
             background: var(--accent);
-            border-left: 3px solid var(--warning);
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 6px;
+            border-left: 4px solid var(--warning);
+            padding: var(--space-4);
+            border-radius: var(--radius);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .call-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .call-item:hover::before {
+            left: 100%;
+        }
+
+        .call-item:hover {
+            background: #252525;
+            transform: translateX(3px);
+        }
+
+        .call-item.active {
+            border-left-color: var(--primary);
+            background: var(--primary-transparent);
+        }
+
+        .call-item.priority-high {
+            border-left-color: var(--danger);
+        }
+
+        .call-item.priority-medium {
+            border-left-color: var(--warning);
+        }
+
+        .call-item.priority-low {
+            border-left-color: var(--success);
         }
 
         .call-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 6px;
+            margin-bottom: var(--space-2);
         }
 
         .call-id {
             font-weight: 600;
             color: var(--light);
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
         }
 
         .call-priority {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 10px;
+            font-size: var(--font-xs);
+            padding: var(--space-1) var(--space-2);
+            border-radius: 12px;
             background: var(--warning);
             color: var(--secondary);
             font-weight: 700;
         }
 
+        .priority-high .call-priority {
+            background: var(--danger);
+        }
+
+        .priority-low .call-priority {
+            background: var(--success);
+        }
+
         .call-location {
             font-weight: 500;
-            margin-bottom: 4px;
-            font-size: 0.85rem;
+            margin-bottom: var(--space-1);
+            font-size: var(--font-sm);
         }
 
         .call-type {
-            font-size: 0.75rem;
+            font-size: var(--font-xs);
             color: var(--gray);
         }
 
-        /* Unit Assignment - More Compact */
+        .call-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-2);
+            font-size: var(--font-xs);
+            color: var(--gray);
+        }
+
+        /* ===== UNIT MANAGEMENT ===== */
         .unit-assignment {
-            margin-top: 12px;
-            padding-top: 12px;
+            margin-top: var(--space-4);
+            padding-top: var(--space-4);
             border-top: 1px solid var(--border);
         }
 
         .assignment-title {
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: var(--space-3);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-2);
         }
 
         .unit-search {
             position: relative;
-            margin-bottom: 8px;
-        }
-
-        .unit-search input {
-            width: 100%;
-            padding: 6px 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            color: white;
-            font-size: 0.8rem;
+            margin-bottom: var(--space-3);
         }
 
         .search-results {
@@ -427,127 +743,128 @@
             right: 0;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 5px;
-            max-height: 120px;
+            border-radius: var(--radius);
+            max-height: 150px;
             overflow-y: auto;
             z-index: 10;
             display: none;
         }
 
         .search-result {
-            padding: 6px 8px;
+            padding: var(--space-3);
             cursor: pointer;
             transition: background 0.2s;
             border-bottom: 1px solid var(--border);
-            font-size: 0.8rem;
         }
 
-        /* Custom Select - More Compact */
-        .custom-select {
-            position: relative;
-            width: 100%;
-            margin-bottom: 8px;
+        .search-result:last-child {
+            border-bottom: none;
         }
 
-        .custom-select-header {
-            padding: 6px 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-        }
-
-        .custom-select-options {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            max-height: 120px;
-            overflow-y: auto;
-            z-index: 10;
-            display: none;
-        }
-
-        .custom-select-option {
-            padding: 6px 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.8rem;
+        .search-result:hover {
+            background: var(--primary);
         }
 
         .assign-btn {
             width: 100%;
-            padding: 6px;
+            padding: var(--space-3);
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
+            font-size: var(--font-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
         }
 
-        /* Unit List - More Compact */
+        .assign-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(162, 22, 28, 0.4);
+        }
+
+        /* ===== UNIT LIST ===== */
         .department-section {
-            margin-bottom: 15px;
+            margin-bottom: var(--space-5);
         }
 
         .department-header {
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+            padding-bottom: var(--space-3);
             border-bottom: 1px solid var(--border);
         }
 
         .department-logo {
-            height: 18px;
+            height: 24px;
             width: auto;
         }
 
         .department-title {
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             font-weight: 600;
         }
 
         .rank-section {
-            margin-bottom: 12px;
+            margin-bottom: var(--space-4);
         }
 
         .rank-title {
-            font-size: 0.8rem;
+            font-size: var(--font-sm);
             color: var(--gray);
-            margin-bottom: 8px;
-            padding-left: 4px;
+            margin-bottom: var(--space-3);
+            padding-left: var(--space-2);
             border-left: 2px solid var(--primary);
         }
 
         .unit-item {
             display: flex;
             align-items: center;
-            padding: 8px;
-            margin-bottom: 6px;
+            padding: var(--space-3);
+            margin-bottom: var(--space-2);
             background: var(--accent);
-            border-radius: 6px;
+            border-radius: var(--radius);
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .unit-item:hover {
+            background: #252525;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         .unit-status {
-            width: 8px;
-            height: 8px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            margin-right: 8px;
+            margin-right: var(--space-3);
+            box-shadow: 0 0 6px currentColor;
+        }
+
+        .unit-status.available {
+            background: var(--success);
+            color: var(--success);
+        }
+
+        .unit-status.busy {
+            background: var(--warning);
+            color: var(--warning);
+        }
+
+        .unit-status.out-of-service {
+            background: var(--danger);
+            color: var(--danger);
+        }
+
+        .unit-status.en-route {
+            background: var(--info);
+            color: var(--info);
         }
 
         .unit-info {
@@ -556,78 +873,104 @@
 
         .unit-id {
             font-weight: 600;
-            margin-bottom: 2px;
+            font-size: var(--font-sm);
+            margin-bottom: var(--space-1);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-2);
         }
 
         .unit-badge {
-            font-size: 0.65rem;
+            font-size: var(--font-xs);
             color: var(--primary);
         }
 
-        .unit-officer, .unit-location, .unit-status-time {
-            font-size: 0.75rem;
+        .unit-officer {
+            font-size: var(--font-xs);
             color: var(--gray);
-            margin-bottom: 2px;
+            margin-bottom: var(--space-1);
+        }
+
+        .unit-location {
+            font-size: var(--font-xs);
+            color: var(--gray);
+            margin-bottom: var(--space-1);
+        }
+
+        .unit-status-time {
+            font-size: var(--font-xs);
+            color: var(--gray);
         }
 
         .unit-actions {
             display: flex;
-            gap: 4px;
+            gap: var(--space-2);
         }
 
         .unit-action-btn {
-            padding: 3px 6px;
+            padding: var(--space-1) var(--space-2);
             background: var(--card-bg);
             color: var(--light);
             border: 1px solid var(--border);
-            border-radius: 3px;
-            font-size: 0.6rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-xs);
             cursor: pointer;
+            transition: var(--transition);
         }
 
-        /* Active Incident Panel - More Compact */
+        .unit-action-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* ===== ACTIVE INCIDENT ===== */
         .active-incident {
             display: flex;
             flex-direction: column;
             height: 100%;
+            gap: var(--space-4);
         }
 
         .incident-header {
             background: var(--accent);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 12px;
+            padding: var(--space-4);
+            border-radius: var(--radius);
             border: 1px solid var(--border);
         }
 
         .incident-title {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: var(--space-3);
         }
 
         .incident-id {
             font-weight: 600;
-            font-size: 1rem;
+            font-size: var(--font-lg);
         }
 
         .incident-priority {
-            padding: 4px 8px;
-            border-radius: 5px;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius);
             background: var(--warning);
             color: var(--secondary);
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: var(--font-xs);
+        }
+
+        .priority-high .incident-priority {
+            background: var(--danger);
+        }
+
+        .priority-low .incident-priority {
+            background: var(--success);
         }
 
         .incident-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
         }
 
         .detail-item {
@@ -636,111 +979,130 @@
         }
 
         .detail-label {
-            font-size: 0.7rem;
+            font-size: var(--font-xs);
             color: var(--gray);
-            margin-bottom: 2px;
+            margin-bottom: var(--space-1);
         }
 
         .detail-value {
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: var(--font-sm);
         }
 
         .narrative-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            margin-bottom: 12px;
         }
 
         .narrative-title {
-            margin-bottom: 8px;
+            margin-bottom: var(--space-3);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-2);
         }
 
         .narrative-log {
             flex: 1;
             background: var(--accent);
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: var(--radius);
+            padding: var(--space-4);
             overflow-y: auto;
-            font-size: 0.8rem;
-            max-height: 120px;
+            font-size: var(--font-sm);
+            max-height: 200px;
             border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
         }
 
         .narrative-entry {
-            margin-bottom: 8px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid var(--border-light);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .narrative-entry:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
         .narrative-time {
-            font-size: 0.65rem;
+            font-size: var(--font-xs);
             color: var(--gray);
-            margin-bottom: 2px;
+            margin-bottom: var(--space-1);
         }
 
         .narrative-input {
             display: flex;
-            margin-top: 8px;
+            margin-top: var(--space-3);
         }
 
         .narrative-input input {
             flex: 1;
-            padding: 6px;
+            padding: var(--space-3);
             background: var(--accent);
             border: 1px solid var(--border);
-            border-radius: 5px 0 0 5px;
+            border-radius: var(--radius) 0 0 var(--radius);
             color: white;
-            font-size: 0.8rem;
+            transition: border-color 0.3s ease;
+            font-size: var(--font-sm);
+        }
+
+        .narrative-input input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .narrative-input button {
-            padding: 6px 8px;
+            padding: var(--space-3) var(--space-4);
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             border: none;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
             color: white;
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .narrative-input button:hover {
+            background: var(--primary-dark);
         }
 
         .assigned-units {
-            margin-top: 12px;
+            margin-top: var(--space-4);
         }
 
         .units-title {
-            margin-bottom: 8px;
+            margin-bottom: var(--space-3);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-2);
         }
 
         .unit-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            min-height: 30px;
-            padding: 8px;
+            gap: var(--space-2);
+            min-height: 40px;
+            padding: var(--space-3);
             background: var(--accent);
-            border-radius: 6px;
+            border-radius: var(--radius);
             border: 1px solid var(--border);
         }
 
         .unit-tag {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.75rem;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius);
+            font-size: var(--font-xs);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-2);
+            animation: fadeIn 0.3s ease-out;
         }
 
         .unit-tag-remove {
@@ -748,57 +1110,202 @@
             border: none;
             color: white;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: var(--font-xs);
             padding: 0;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            transition: background 0.2s;
         }
 
-        /* Priority Button - More Compact */
-        .priority-btn {
-            animation: spectrum 3s infinite;
-            font-size: 0.75rem;
-            padding: 6px 10px;
+        .unit-tag-remove:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Active Alerts - More Compact */
+        /* ===== TOOLS SYSTEM ===== */
+        .tools-btn {
+            position: fixed;
+            bottom: var(--space-5);
+            right: var(--space-5);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: var(--font-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 100;
+            transition: var(--transition);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tools-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(162, 22, 28, 0.6);
+        }
+
+        .tools-panel {
+            position: fixed;
+            bottom: 80px;
+            right: var(--space-5);
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            width: 300px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            z-index: 100;
+            display: none;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .tools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tools-title {
+            font-size: var(--font-lg);
+            font-weight: 600;
+        }
+
+        .close-tools {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: var(--font-xl);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-tools:hover {
+            color: var(--light);
+        }
+
+        .tools-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .tool-option {
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .tool-option:hover {
+            background: var(--primary-transparent);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tool-option i {
+            color: var(--primary);
+            font-size: var(--font-lg);
+        }
+
+        /* ===== ALERTS SYSTEM ===== */
+        .priority-alert {
+            position: fixed;
+            top: 70px;
+            right: var(--space-5);
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+            color: white;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: var(--font-sm);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: none;
+            animation: alertSlide 0.5s ease-out, alertFlash 1s infinite;
+        }
+
+        @keyframes alertSlide {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .signal-alert {
+            position: fixed;
+            top: 120px;
+            right: var(--space-5);
+            background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%);
+            color: white;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: var(--font-sm);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: none;
+            animation: alertSlide 0.5s ease-out, signalFlash 1s infinite;
+        }
+
+        @keyframes signalFlash {
+            0%, 100% { box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.8); }
+        }
+
         .active-alerts {
             position: fixed;
-            top: 55px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
+            width: 80%;
+            max-width: 600px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: var(--space-3);
         }
 
         .alert-item {
             background: var(--card-bg);
-            border-radius: 6px;
-            padding: 8px 10px;
+            border-radius: var(--radius);
+            padding: var(--space-3) var(--space-4);
             border: 1px solid var(--border);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-lg);
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
+            gap: var(--space-3);
+            animation: slideDown 0.3s ease-out;
         }
 
         .alert-icon {
-            font-size: 1rem;
-            width: 24px;
-            height: 24px;
+            font-size: var(--font-lg);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .alert-icon.priority {
+            background: var(--danger);
+        }
+
+        .alert-icon.signal {
+            background: var(--warning);
         }
 
         .alert-content {
@@ -807,16 +1314,17 @@
 
         .alert-title {
             font-weight: 600;
-            margin-bottom: 2px;
+            font-size: var(--font-sm);
+            margin-bottom: var(--space-1);
         }
 
         .alert-description {
-            font-size: 0.75rem;
+            font-size: var(--font-xs);
             color: var(--gray);
         }
 
         .alert-time {
-            font-size: 0.65rem;
+            font-size: var(--font-xs);
             color: var(--gray);
         }
 
@@ -825,10 +1333,15 @@
             border: none;
             color: var(--gray);
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: var(--font-base);
+            transition: color 0.3s ease;
         }
 
-        /* Modal Styles - More Compact */
+        .alert-close:hover {
+            color: var(--light);
+        }
+
+        /* ===== MODAL SYSTEM ===== */
         .modal {
             display: none;
             position: fixed;
@@ -837,246 +1350,23 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: var(--space-4);
         }
 
         .modal-content {
             background: var(--card-bg);
-            border-radius: 8px;
-            width: 450px;
+            border-radius: var(--radius-lg);
+            width: 500px;
             max-width: 90%;
-            padding: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
+            padding: var(--space-5);
+            box-shadow: var(--shadow-xl);
             border: 1px solid var(--border);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-title {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .form-textarea {
-            width: 100%;
-            height: 70px;
-            padding: 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            color: white;
-            resize: vertical;
-            font-size: 0.8rem;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        /* Status Options - More Compact */
-        .status-options {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .status-option {
-            flex: 1;
-            padding: 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.8rem;
-        }
-
-        /* Department Selection - More Compact */
-        .department-selection {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .department-option {
-            flex: 1;
-            padding: 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.8rem;
-        }
-
-        .department-option-logo {
-            height: 18px;
-            width: auto;
-        }
-
-        /* Update Options - More Compact */
-        .update-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 15px 0;
-        }
-
-        .update-option {
-            padding: 10px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-        }
-
-        /* Signal Input - More Compact */
-        .signal-input {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .signal-input input {
-            flex: 1;
-            padding: 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            color: white;
-            font-size: 0.85rem;
-        }
-
-        /* Guide Container - More Compact */
-        .guide-container {
-            max-height: 350px;
+            animation: modalAppear 0.3s ease-out;
             overflow-y: auto;
-            margin: 12px 0;
-        }
-
-        .guide-category {
-            margin-bottom: 15px;
-        }
-
-        .guide-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid var(--border);
-            color: var(--primary);
-        }
-
-        .guide-steps {
-            padding-left: 12px;
-        }
-
-        .guide-step {
-            margin-bottom: 6px;
-            font-size: 0.8rem;
-            line-height: 1.3;
-        }
-
-        /* Priority Options - More Compact */
-        .priority-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .priority-option {
-            padding: 8px;
-            background: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.8rem;
-        }
-
-        /* Empty State - More Compact */
-        .empty-state {
-            text-align: center;
-            padding: 20px 10px;
-            color: var(--gray);
-        }
-
-        .empty-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        /* LKVC Branding - More Compact */
-        .lkvc-brand {
-            position: fixed;
-            bottom: 8px;
-            right: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--gray);
-            font-size: 0.65rem;
-            z-index: 100;
-        }
-
-        .lkvc-logo {
-            height: 14px;
-            width: auto;
-            opacity: 0.7;
-        }
-
-        /* Utility Classes */
-        .text-sm { font-size: 0.75rem; }
-        .text-xs { font-size: 0.65rem; }
-        .text-center { text-align: center; }
-        .mt-8 { margin-top: 8px; }
-        .mt-12 { margin-top: 12px; }
-        .hidden { display: none; }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--accent); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
-
-        /* Animations */
-        @keyframes betaPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
 
         @keyframes modalAppear {
@@ -1084,39 +1374,573 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(15px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid var(--border);
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-15px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .modal-title {
+            font-size: var(--font-lg);
+            font-weight: 600;
         }
 
-        @keyframes spectrum {
-            0% { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
-            25% { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-            50% { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-            75% { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
-            100% { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: var(--font-xl);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--light);
+        }
+
+        .modal-body {
+            margin-bottom: var(--space-4);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+            padding-top: var(--space-3);
+            border-top: 1px solid var(--border);
+        }
+
+        /* ===== STATUS OPTIONS ===== */
+        .status-options {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+
+        .status-option {
+            flex: 1;
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: var(--font-sm);
+        }
+
+        .status-option.active {
+            background: var(--primary-transparent);
+            border-color: var(--primary);
+        }
+
+        /* ===== DEPARTMENT SELECTION ===== */
+        .department-selection {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+
+        .department-option {
+            flex: 1;
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .department-option.active {
+            background: var(--primary-transparent);
+            border-color: var(--primary);
+        }
+
+        .department-option-logo {
+            height: 24px;
+            width: auto;
+        }
+
+        /* ===== UPDATE OPTIONS ===== */
+        .update-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            margin: var(--space-4) 0;
+        }
+
+        .update-option {
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .update-option:hover {
+            background: var(--primary-transparent);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .update-option i {
+            color: var(--primary);
+            font-size: var(--font-lg);
+        }
+
+        /* ===== SIGNAL INPUT ===== */
+        .signal-input {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .signal-input input {
+            flex: 1;
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: white;
+            font-size: var(--font-sm);
+        }
+
+        .signal-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ===== GUIDE SYSTEM ===== */
+        .guide-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: var(--space-4) 0;
+        }
+
+        .guide-category {
+            margin-bottom: var(--space-5);
+        }
+
+        .guide-title {
+            font-size: var(--font-base);
+            font-weight: 600;
+            margin-bottom: var(--space-3);
+            padding-bottom: var(--space-1);
+            border-bottom: 1px solid var(--border);
+            color: var(--primary);
+        }
+
+        .guide-steps {
+            padding-left: var(--space-4);
+        }
+
+        .guide-step {
+            margin-bottom: var(--space-2);
+            font-size: var(--font-sm);
+            line-height: 1.4;
+        }
+
+        /* ===== PRIORITY OPTIONS ===== */
+        .priority-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+            margin-top: var(--space-3);
+        }
+
+        .priority-option {
+            padding: var(--space-3);
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: var(--font-sm);
+        }
+
+        .priority-option:hover {
+            background: var(--primary-transparent);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* ===== EMPTY STATES ===== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-8) var(--space-4);
+            color: var(--gray);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-4);
+            color: #333;
+        }
+
+        /* ===== LOGIN SCREEN ===== */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: var(--space-4);
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
+        }
+
+        .login-logo {
+            width: 140px;
+            margin-bottom: var(--space-5);
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .login-title {
+            font-size: var(--font-2xl);
+            margin-bottom: var(--space-2);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .login-subtitle {
+            color: var(--gray);
+            margin-bottom: var(--space-5);
+            font-size: var(--font-sm);
+        }
+
+        .login-warning {
+            background: var(--primary-transparent);
+            border-left: 3px solid var(--primary);
+            padding: var(--space-3);
+            margin-bottom: var(--space-5);
+            text-align: left;
+            border-radius: var(--radius);
+            font-size: var(--font-xs);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: var(--space-3);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: var(--font-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: var(--space-2);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(162, 22, 28, 0.4);
+        }
+
+        /* ===== CONFIRMATION MODAL ===== */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-content {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        .confirmation-icon {
+            font-size: 3rem;
+            color: var(--success);
+            margin-bottom: var(--space-4);
+        }
+
+        .confirmation-title {
+            font-size: var(--font-xl);
+            margin-bottom: var(--space-3);
+            font-weight: 600;
+        }
+
+        .confirmation-message {
+            color: var(--gray);
+            margin-bottom: var(--space-5);
+            line-height: 1.5;
+            font-size: var(--font-sm);
+        }
+
+        .confirmation-btn {
+            padding: var(--space-3) var(--space-5);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .confirmation-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(162, 22, 28, 0.4);
+        }
+
+        /* ===== SIGN OUT MODAL ===== */
+        .signout-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signout-content {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        .signout-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: var(--space-5);
+        }
+
+        .signout-title {
+            font-size: var(--font-xl);
+            margin-bottom: var(--space-4);
+            font-weight: 600;
+        }
+
+        .signout-message {
+            color: var(--gray);
+            margin-bottom: var(--space-5);
+            line-height: 1.6;
+            font-size: var(--font-sm);
+        }
+
+        .signout-actions {
+            display: flex;
+            gap: var(--space-3);
+            justify-content: center;
+        }
+
+        /* ===== SIGN OUT SUCCESS ===== */
+        .signout-success {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: var(--space-5);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: var(--space-5);
+            animation: successPulse 2s infinite;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .success-title {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-4);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .success-message {
+            color: var(--gray);
+            margin-bottom: var(--space-6);
+            line-height: 1.6;
+            font-size: var(--font-lg);
+            max-width: 500px;
+        }
+
+        .countdown {
+            font-size: var(--font-base);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ===== BETA BADGE ===== */
+        .beta-badge {
+            position: fixed;
+            top: var(--space-3);
+            left: var(--space-3);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: var(--space-2) var(--space-3);
+            border-radius: 20px;
+            font-size: var(--font-xs);
+            font-weight: 600;
+            z-index: 3000;
+            box-shadow: var(--shadow);
+            animation: betaPulse 3s infinite;
+        }
+
+        /* ===== LKVC BRANDING ===== */
+        .lkvc-brand {
+            position: fixed;
+            bottom: var(--space-3);
+            right: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            color: var(--gray);
+            font-size: var(--font-xs);
+            z-index: 100;
+        }
+
+        .lkvc-logo {
+            height: 16px;
+            width: auto;
+            opacity: 0.7;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 280px 1fr 280px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 250px 1fr 250px;
+                gap: var(--space-3);
+                padding: var(--space-3);
+            }
+            
+            .panel {
+                padding: var(--space-4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            
+            .tools-panel {
+                width: 280px;
+                right: var(--space-3);
+                bottom: 70px;
+            }
+            
+            .tools-btn {
+                right: var(--space-3);
+                bottom: var(--space-3);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 var(--space-3);
+            }
+            
+            .main-content {
+                padding: var(--space-2);
+                gap: var(--space-2);
+            }
+            
+            .panel {
+                padding: var(--space-3);
+            }
+            
+            .modal-content {
+                padding: var(--space-4);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Beta Badge - Compact -->
-    <div class="beta-badge">BETA • Under Development</div>
+    <!-- Beta Badge -->
+    <div class="beta-badge">BETA • Under Development & Testing</div>
 
-    <!-- LKVC Branding - Compact -->
+    <!-- LKVC Branding -->
     <div class="lkvc-brand">
         <img src="https://ik.imagekit.io/tycncf0zq0/Lakeview%20City%20Roleplay.png?updatedAt=1762564831685" alt="LKVC" class="lkvc-logo">
         <span>Lakeview City Roleplay</span>
     </div>
 
-    <!-- Active Alerts Section - Compact -->
-    <div class="active-alerts" id="active-alerts"></div>
+    <!-- Active Alerts Section -->
+    <div class="active-alerts" id="active-alerts">
+        <!-- Priority and Signal alerts will appear here -->
+    </div>
 
-    <!-- Login Screen - Compact -->
+    <!-- Login Screen -->
     <div class="login-container" id="login-screen">
         <img src="https://ik.imagekit.io/seqcqjmzq/e595f6f1-e9e2-44a1-8b97-0c5afc307593.png?updatedAt=1756007991242" alt="Lakeview Comms CAD" class="login-logo">
         <div class="login-card">
@@ -1140,18 +1964,13 @@
                 
                 <div class="form-group">
                     <label class="form-label">Position</label>
-                    <div class="custom-select" id="position-select">
-                        <div class="custom-select-header">
-                            <span>Select your position</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="custom-select-options">
-                            <div class="custom-select-option" data-value="Dispatcher">Dispatcher</div>
-                            <div class="custom-select-option" data-value="Senior Dispatcher">Senior Dispatcher</div>
-                            <div class="custom-select-option" data-value="ECC Supervisor">ECC Supervisor</div>
-                            <div class="custom-select-option" data-value="Administrator">Administrator</div>
-                        </div>
-                    </div>
+                    <select class="form-select" id="position" required>
+                        <option value="">Select your position</option>
+                        <option value="Dispatcher">Dispatcher</option>
+                        <option value="Senior Dispatcher">Senior Dispatcher</option>
+                        <option value="ECC Supervisor">ECC Supervisor</option>
+                        <option value="Administrator">Administrator</option>
+                    </select>
                 </div>
                 
                 <button type="submit" class="login-btn">Access CAD System</button>
@@ -1159,19 +1978,19 @@
         </div>
     </div>
 
-    <!-- Confirmation Modal - Compact -->
+    <!-- Confirmation Modal -->
     <div class="confirmation-modal" id="confirmation-modal">
         <div class="confirmation-content">
             <div class="confirmation-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
             <h2 class="confirmation-title">Shift Logged Successfully</h2>
-            <p class="confirmation-message">Your shift has been logged in our system. You are now connected to the Lakeview Comms CAD system.</p>
+            <p class="confirmation-message">Your shift has been logged in our system. You are now connected to the Lakeview Comms CAD system. Thank you for your service!</p>
             <button class="confirmation-btn" id="close-confirmation">Continue to CAD</button>
         </div>
     </div>
 
-    <!-- Sign Out Modal - Compact -->
+    <!-- Sign Out Modal -->
     <div class="signout-modal" id="signout-modal">
         <div class="signout-content">
             <div class="signout-icon">
@@ -1186,7 +2005,22 @@
         </div>
     </div>
 
-    <!-- Tools Panel - Compact -->
+    <!-- Sign Out Success Screen -->
+    <div class="signout-success" id="signout-success">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="success-title">Session Logged Successfully</h1>
+        <p class="success-message">Your session has been logged successfully! Thank you for your shift, this tab will close automatically in <span class="countdown" id="countdown">10</span> seconds.</p>
+    </div>
+
+    <!-- Priority Alert -->
+    <div class="priority-alert" id="priority-alert"></div>
+
+    <!-- Signal Alert -->
+    <div class="signal-alert" id="signal-alert"></div>
+
+    <!-- Tools Panel -->
     <div class="tools-panel" id="tools-panel">
         <div class="tools-header">
             <div class="tools-title">Dispatcher Tools</div>
@@ -1221,17 +2055,308 @@
                     <div class="text-xs">Complete system documentation</div>
                 </div>
             </div>
+            <div class="tool-option" data-tool="settings">
+                <i class="fas fa-cog"></i>
+                <div>
+                    <div class="text-sm">System Settings</div>
+                    <div class="text-xs">Configure CAD preferences</div>
+                </div>
+            </div>
+            <div class="tool-option" data-tool="reports">
+                <i class="fas fa-chart-bar"></i>
+                <div>
+                    <div class="text-sm">Activity Reports</div>
+                    <div class="text-xs">View shift statistics</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Tools Button - Compact -->
+    <!-- Tools Button -->
     <button class="tools-btn" id="tools-btn">
         <i class="fas fa-tools"></i>
     </button>
 
-    <!-- CAD Application - Compact -->
+    <!-- Update Unit Modal -->
+    <div class="modal" id="update-unit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Update Unit <span id="update-unit-id"></span></div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="update-options">
+                <div class="update-option" data-action="status">
+                    <i class="fas fa-exchange-alt"></i>
+                    <div>
+                        <div class="text-sm">Change Status</div>
+                        <div class="text-xs">Update unit status (10-8, 10-6, 10-7)</div>
+                    </div>
+                </div>
+                <div class="update-option" data-action="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <div class="text-sm">Update Location</div>
+                        <div class="text-xs">Change unit's current location</div>
+                    </div>
+                </div>
+                <div class="update-option" data-action="remove">
+                    <i class="fas fa-trash"></i>
+                    <div>
+                        <div class="text-sm">Remove Unit</div>
+                        <div class="text-xs">Permanently remove this unit</div>
+                    </div>
+                </div>
+                <div class="update-option" data-action="transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                    <div>
+                        <div class="text-sm">Transfer Unit</div>
+                        <div class="text-xs">Transfer to different incident</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-update">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signal Modal -->
+    <div class="modal" id="signal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Activate Signal</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="signal-input">
+                <input type="number" id="signal-number" placeholder="Enter signal number (e.g., 11, 100)" min="1" max="1000">
+                <button class="btn" id="activate-signal">Activate</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-signal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supervisor Request Modal -->
+    <div class="modal" id="supervisor-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Supervisor Request</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="supervisor-result">
+                <!-- Supervisor result will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-supervisor">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 911 Guide Modal -->
+    <div class="modal" id="guide-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">911 Call Guide</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="guide-container">
+                <div class="guide-category">
+                    <div class="guide-title">Medical Emergencies</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Choking:</strong> Ask if they can speak or cough. If not, instruct on back blows and abdominal thrusts.</div>
+                        <div class="guide-step">• <strong>Heart Attack:</strong> Have them sit down, loosen tight clothing. Ask if they have medication.</div>
+                        <div class="guide-step">• <strong>Seizure:</strong> Clear area of hard objects. Do not restrain. Time the seizure.</div>
+                        <div class="guide-step">• <strong>Bleeding:</strong> Apply direct pressure with clean cloth. Elevate injury if possible.</div>
+                        <div class="guide-step">• <strong>Allergic Reaction:</strong> Ask if they have an epinephrine auto-injector. Help them use it if available.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Violent Situations</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Active Shooter:</strong> Instruct to Run, Hide, Fight. Find cover, silence phones.</div>
+                        <div class="guide-step">• <strong>Domestic Violence:</strong> Keep caller calm. Ask if safe to talk. Get location and suspect description.</div>
+                        <div class="guide-step">• <strong>Kidnapping:</strong> Get vehicle description, direction of travel, last known location.</div>
+                        <div class="guide-step">• <strong>Hostage Situation:</strong> Keep caller hidden if possible. Gather information quietly.</div>
+                        <div class="guide-step">• <strong>Fight in Progress:</strong> Get number of people involved, weapons visible, location specifics.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Fire Emergencies</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Structure Fire:</strong> Confirm everyone is out. Do not re-enter building.</div>
+                        <div class="guide-step">• <strong>Vehicle Fire:</strong> Move at least 100 feet away. Warn about potential explosion.</div>
+                        <div class="guide-step">• <strong>Wildfire:</strong> Evacuate immediately. Close all windows and doors before leaving.</div>
+                        <div class="guide-step">• <strong>Electrical Fire:</strong> Do not use water. Use Class C fire extinguisher if available.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Traffic Incidents</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Major Collision:</strong> Check for injuries, fuel leaks, hazardous materials.</div>
+                        <div class="guide-step">• <strong>Vehicle in Water:</strong> Guide to escape through windows. Vehicle will float momentarily.</div>
+                        <div class="guide-step">• <strong>Rollover:</strong> Do not move injured persons unless in immediate danger.</div>
+                        <div class="guide-step">• <strong>Pedestrian Struck:</strong> Secure scene. Do not move victim. Control traffic if safe.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Psychological Crises</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Suicide Threat:</strong> Keep caller talking. Remove means of self-harm if possible.</div>
+                        <div class="guide-step">• <strong>Mental Health Crisis:</strong> Speak calmly. Avoid sudden movements. Create safe space.</div>
+                        <div class="guide-step">• <strong>Panic Attack:</strong> Guide through deep breathing. Focus on present moment.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-guide">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documentation Modal -->
+    <div class="modal" id="doc-modal">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh;">
+            <div class="modal-header">
+                <div class="modal-title">Lakeview Comms CAD Documentation</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="guide-container">
+                <h3 class="text-lg font-semibold mb-4">Complete System Documentation</h3>
+                <p class="text-sm text-gray mb-4">Welcome to the Lakeview Comms CAD documentation. This guide will help you understand and use all features of the system effectively.</p>
+                
+                <div class="guide-category">
+                    <div class="guide-title">Getting Started</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">1. <strong>Login:</strong> Use your Discord ID and Roblox username to access the system</div>
+                        <div class="guide-step">2. <strong>Interface Overview:</strong> Familiarize yourself with the three-panel layout</div>
+                        <div class="guide-step">3. <strong>Creating Incidents:</strong> Use the "New Call" button to create emergency incidents</div>
+                        <div class="guide-step">4. <strong>Managing Units:</strong> Add and assign units using the unit management panel</div>
+                    </div>
+                </div>
+                
+                <div class="guide-category">
+                    <div class="guide-title">Advanced Features</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Priority Situations:</strong> Activate emergency protocols for critical incidents</div>
+                        <div class="guide-step">• <strong>Signal Activation:</strong> Use the tools panel to activate emergency signals</div>
+                        <div class="guide-step">• <strong>Supervisor Requests:</strong> Request supervisor assistance when needed</div>
+                        <div class="guide-step">• <strong>Narrative Logging:</strong> Maintain detailed incident records with timestamped entries</div>
+                        <div class="guide-step">• <strong>Unit Management:</strong> Track unit status, location, and assignments in real-time</div>
+                    </div>
+                </div>
+                
+                <div class="guide-category">
+                    <div class="guide-title">Best Practices</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• Always verify unit availability before assignment</div>
+                        <div class="guide-step">• Use priority levels appropriately for incident severity</div>
+                        <div class="guide-step">• Maintain clear and concise narrative entries</div>
+                        <div class="guide-step">• Regularly update unit status and location information</div>
+                        <div class="guide-step">• Use the 911 Call Guide for emergency protocols</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-doc">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">System Settings</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Theme</label>
+                    <select class="form-select" id="theme-select">
+                        <option value="dark">Dark Theme</option>
+                        <option value="light">Light Theme</option>
+                        <option value="auto">Auto (System)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notifications</label>
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="sound-notifications" checked>
+                        <label for="sound-notifications">Enable sound notifications</label>
+                    </div>
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="priority-notifications" checked>
+                        <label for="priority-notifications">Enable priority alerts</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Auto-refresh Interval</label>
+                    <select class="form-select" id="refresh-interval">
+                        <option value="5000">5 seconds</option>
+                        <option value="10000" selected>10 seconds</option>
+                        <option value="30000">30 seconds</option>
+                        <option value="60000">1 minute</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-settings">Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-settings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Modal -->
+    <div class="modal" id="reports-modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <div class="modal-title">Activity Reports</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-lg font-semibold">Shift Statistics</h4>
+                    <span class="text-sm text-gray" id="report-period">Current Shift</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-accent p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-primary" id="total-calls">0</div>
+                        <div class="text-sm text-gray">Total Calls</div>
+                    </div>
+                    <div class="bg-accent p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-success" id="active-units">0</div>
+                        <div class="text-sm text-gray">Active Units</div>
+                    </div>
+                </div>
+                <div class="bg-accent p-4 rounded-lg">
+                    <h5 class="font-semibold mb-2">Call Distribution</h5>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>High Priority</span>
+                            <span id="high-priority-count">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Medium Priority</span>
+                            <span id="medium-priority-count">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Low Priority</span>
+                            <span id="low-priority-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-reports">Close</button>
+                <button type="button" class="btn btn-primary" id="export-report">Export Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CAD Application -->
     <div class="app-container" id="cad-app">
-        <header>
+        <header class="header">
             <div class="logo-container">
                 <img src="https://ik.imagekit.io/seqcqjmzq/e595f6f1-e9e2-44a1-8b97-0c5afc307593.png?updatedAt=1756007991242" alt="Lakeview Comms CAD" class="logo">
                 <div class="title">Lakeview Comms CAD</div>
@@ -1249,7 +2374,7 @@
         </header>
 
         <div class="main-content">
-            <!-- Left Panel: Call List - Compact -->
+            <!-- Left Panel: Call List -->
             <div class="panel">
                 <div class="panel-header">
                     <div class="panel-title">
@@ -1257,8 +2382,11 @@
                         Incident Queue
                     </div>
                     <div class="panel-actions">
-                        <button class="btn" id="new-call-btn">
+                        <button class="btn btn-sm" id="new-call-btn">
                             <i class="fas fa-plus"></i> New Call
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="refresh-calls">
+                            <i class="fas fa-sync-alt"></i>
                         </button>
                     </div>
                 </div>
@@ -1273,7 +2401,7 @@
                 </div>
             </div>
 
-            <!-- Center Panel: Active Incident - Compact -->
+            <!-- Center Panel: Active Incident -->
             <div class="panel">
                 <div class="active-incident">
                     <div class="incident-header" id="active-incident-header">
@@ -1291,7 +2419,9 @@
                             <i class="fas fa-scroll"></i>
                             Incident Narrative
                         </div>
-                        <div class="narrative-log" id="narrative-log"></div>
+                        <div class="narrative-log" id="narrative-log">
+                            <!-- Narrative entries will be added here -->
+                        </div>
                         <div class="narrative-input">
                             <input type="text" id="narrative-input" placeholder="Add narrative entry..." disabled>
                             <button id="add-narrative" disabled>
@@ -1305,7 +2435,9 @@
                             <i class="fas fa-users"></i>
                             Assigned Units
                         </div>
-                        <div class="unit-tags" id="assigned-units"></div>
+                        <div class="unit-tags" id="assigned-units">
+                            <!-- Assigned units will be added here -->
+                        </div>
                     </div>
 
                     <div class="unit-assignment">
@@ -1317,27 +2449,26 @@
                             <input type="text" id="unit-search" placeholder="Search for units...">
                             <div class="search-results" id="search-results"></div>
                         </div>
-                        <div class="custom-select" id="unit-select">
-                            <div class="custom-select-header">
-                                <span>Select a unit to assign</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="custom-select-options" id="unit-options"></div>
-                        </div>
+                        <select class="form-select" id="unit-select">
+                            <option value="">Select a unit to assign</option>
+                        </select>
                         <button class="assign-btn" id="assign-btn">
                             <i class="fas fa-plus"></i> Assign Unit
                         </button>
                     </div>
 
-                    <div class="panel-actions mt-12">
+                    <div class="panel-actions">
                         <button class="btn priority-btn" id="priority-btn">
                             <i class="fas fa-exclamation-triangle"></i> Priority Situation
+                        </button>
+                        <button class="btn btn-warning" id="close-incident-btn" disabled>
+                            <i class="fas fa-flag-checkered"></i> Close Incident
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Panel: Unit List - Compact -->
+            <!-- Right Panel: Unit List -->
             <div class="panel">
                 <div class="panel-header">
                     <div class="panel-title">
@@ -1345,12 +2476,16 @@
                         Unit Status Board
                     </div>
                     <div class="panel-actions">
-                        <button class="btn" id="add-unit-btn">
+                        <button class="btn btn-sm" id="add-unit-btn">
                             <i class="fas fa-plus"></i> Add Unit
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="refresh-units">
+                            <i class="fas fa-sync-alt"></i>
                         </button>
                     </div>
                 </div>
                 <div class="unit-list" id="unit-list">
+                    <!-- Units will be added here dynamically -->
                     <div class="empty-state">
                         <div class="empty-icon">
                             <i class="fas fa-car"></i>
@@ -1363,36 +2498,240 @@
         </div>
     </div>
 
-    <!-- Modals would continue here with compact styling -->
-    <!-- Due to character limits, I've included the most critical parts -->
+    <!-- New Call Modal -->
+    <div class="modal" id="new-call-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Create New Call</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="new-call-form">
+                <div class="form-group">
+                    <label class="form-label">Call Type</label>
+                    <input type="text" class="form-input" id="call-type" placeholder="e.g., 10-50 Traffic Accident" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-input" id="call-location" placeholder="Enter location..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Caller Information</label>
+                    <input type="text" class="form-input" id="caller-info" placeholder="Name, callback number...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Initial Narrative</label>
+                    <textarea class="form-textarea" id="initial-narrative" placeholder="Enter initial details..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <div class="status-options">
+                        <div class="status-option" data-value="low">Low</div>
+                        <div class="status-option active" data-value="medium">Medium</div>
+                        <div class="status-option" data-value="high">High</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-call">Cancel</button>
+                    <button type="submit" class="btn btn-success">Create Call</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Priority Situation Modal -->
+    <div class="modal" id="priority-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Active Priority Situation</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="priority-options">
+                <div class="priority-option" data-type="10-80 Pursuit">10-80 Pursuit</div>
+                <div class="priority-option" data-type="10-62 Kidnapping">10-62 Kidnapping</div>
+                <div class="priority-option" data-type="10-64 Hostage">10-64 Hostage</div>
+                <div class="priority-option" data-type="10-13 Shooting">10-13 Shooting</div>
+                <div class="priority-option" data-type="10-67 Fire">10-67 Fire</div>
+                <div class="priority-option" data-type="10-68 Robbery">10-68 Robbery</div>
+                <div class="priority-option" data-type="10-10 Fight">10-10 Fight</div>
+                <div class="priority-option" data-type="10-25 Domestic">10-25 Domestic</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-priority">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Unit Modal -->
+    <div class="modal" id="add-unit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add New Unit</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="add-unit-form">
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <div class="department-selection">
+                        <div class="department-option active" data-department="law-enforcement">
+                            <img src="https://ik.imagekit.io/seqcqjmzq/Lakview%20Police.webp?updatedAt=1762546742643" alt="Law Enforcement" class="department-option-logo">
+                            <span>Law Enforcement</span>
+                        </div>
+                        <div class="department-option" data-department="fire">
+                            <img src="https://ik.imagekit.io/seqcqjmzq/Lakeview%20Fire.webp?updatedAt=1762546987614" alt="Fire District" class="department-option-logo">
+                            <span>Fire District</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Unit Call Sign (101-499)</label>
+                    <input type="number" class="form-input" id="unit-id" placeholder="e.g., 101, 205, 499" min="101" max="499" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Rank/Position</label>
+                    <select class="form-select" id="unit-rank" required>
+                        <option value="">Select Rank</option>
+                        <optgroup label="Law Enforcement">
+                            <option value="Commissioner">Commissioner</option>
+                            <option value="Chief of Police">Chief of Police</option>
+                            <option value="Deputy Chief">Deputy Chief</option>
+                            <option value="Captain">Captain</option>
+                            <option value="Lieutenant">Lieutenant</option>
+                            <option value="Sergeant">Sergeant</option>
+                            <option value="Corporal">Corporal</option>
+                            <option value="Senior Officer">Senior Officer</option>
+                            <option value="Detective">Detective</option>
+                            <option value="Officer">Officer</option>
+                            <option value="Deputy">Deputy</option>
+                            <option value="Cadet">Cadet</option>
+                        </optgroup>
+                        <optgroup label="Fire District">
+                            <option value="Chief">Chief</option>
+                            <option value="Deputy Chief">Deputy Chief</option>
+                            <option value="Assistant Chief">Assistant Chief</option>
+                            <option value="Battalion Chief">Battalion Chief</option>
+                            <option value="Captain">Captain</option>
+                            <option value="Lieutenant">Lieutenant</option>
+                            <option value="Engineer">Engineer</option>
+                            <option value="Firefighter">Firefighter</option>
+                            <option value="Paramedic">Paramedic</option>
+                            <option value="EMT">EMT</option>
+                            <option value="Probationary">Probationary</option>
+                        </optgroup>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Location</label>
+                    <input type="text" class="form-input" id="unit-location" placeholder="Enter last known location..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <div class="status-options">
+                        <div class="status-option active" data-value="10-8">10-8 Available</div>
+                        <div class="status-option" data-value="10-6">10-6 Busy</div>
+                        <div class="status-option" data-value="10-7">10-7 Out of Service</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Roblox Username</label>
+                    <input type="text" class="form-input" id="officer-name" placeholder="Enter officer's Roblox username..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Recent Code</label>
+                    <input type="text" class="form-input" id="recent-code" placeholder="e.g., 10-11 Traffic Stop">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-unit">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Unit</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
-        // Application State
+        // ===== APPLICATION STATE =====
         const state = {
+            // User Information
             user: null,
             shiftStart: null,
+            
+            // Data Collections
             calls: [],
             units: [],
+            activeAlerts: [],
+            activeSignals: [],
+            
+            // Active Selections
             activeCall: null,
-            callCounter: 1,
+            selectedUnit: null,
+            activePrioritySituation: null,
+            
+            // Configuration
             selectedPriority: 'medium',
             selectedUnitStatus: '10-8',
             selectedDepartment: 'law-enforcement',
-            activePrioritySituation: null,
-            selectedUnit: null,
-            activeSignals: [],
-            activeAlerts: []
+            
+            // Counters
+            callCounter: 1,
+            unitCounter: 101,
+            
+            // Settings
+            settings: {
+                theme: 'dark',
+                soundNotifications: true,
+                priorityNotifications: true,
+                refreshInterval: 10000
+            },
+            
+            // Statistics
+            statistics: {
+                totalCalls: 0,
+                activeUnits: 0,
+                highPriorityCount: 0,
+                mediumPriorityCount: 0,
+                lowPriorityCount: 0
+            }
         };
 
-        // DOM Elements
+        // ===== DOM ELEMENTS =====
+        // Login & Authentication
         const loginScreen = document.getElementById('login-screen');
         const cadApp = document.getElementById('cad-app');
         const loginForm = document.getElementById('login-form');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const closeConfirmationBtn = document.getElementById('close-confirmation');
+        const signOutBtn = document.getElementById('sign-out-btn');
+        const signoutModal = document.getElementById('signout-modal');
+        const cancelSignoutBtn = document.getElementById('cancel-signout');
+        const confirmSignoutBtn = document.getElementById('confirm-signout');
+        const signoutSuccess = document.getElementById('signout-success');
+        const countdownElement = document.getElementById('countdown');
+
+        // User Interface
+        const displayUserId = document.getElementById('display-user-id');
+        const shiftTimer = document.getElementById('shift-timer');
         const toolsBtn = document.getElementById('tools-btn');
         const toolsPanel = document.getElementById('tools-panel');
         const closeToolsBtn = document.querySelector('.close-tools');
+        const activeAlertsContainer = document.getElementById('active-alerts');
+
+        // Call Management
         const callList = document.getElementById('call-list');
+        const newCallBtn = document.getElementById('new-call-btn');
+        const newCallModal = document.getElementById('new-call-modal');
+        const newCallForm = document.getElementById('new-call-form');
+        const cancelCallBtn = document.getElementById('cancel-call');
+        const refreshCallsBtn = document.getElementById('refresh-calls');
+
+        // Unit Management
         const unitList = document.getElementById('unit-list');
+        const addUnitBtn = document.getElementById('add-unit-btn');
+        const addUnitModal = document.getElementById('add-unit-modal');
+        const addUnitForm = document.getElementById('add-unit-form');
+        const cancelUnitBtn = document.getElementById('cancel-unit');
+        const refreshUnitsBtn = document.getElementById('refresh-units');
+
+        // Active Incident
         const activeIncidentHeader = document.getElementById('active-incident-header');
         const narrativeLog = document.getElementById('narrative-log');
         const narrativeInput = document.getElementById('narrative-input');
@@ -1401,79 +2740,357 @@
         const unitSearch = document.getElementById('unit-search');
         const searchResults = document.getElementById('search-results');
         const unitSelect = document.getElementById('unit-select');
-        const unitOptions = document.getElementById('unit-options');
         const assignBtn = document.getElementById('assign-btn');
-        const priorityBtn = document.getElementById('priority-btn');
-        const newCallBtn = document.getElementById('new-call-btn');
-        const signOutBtn = document.getElementById('sign-out-btn');
-        const positionSelect = document.getElementById('position-select');
+        const closeIncidentBtn = document.getElementById('close-incident-btn');
 
-        // Initialize the application
+        // Priority System
+        const priorityBtn = document.getElementById('priority-btn');
+        const priorityModal = document.getElementById('priority-modal');
+        const cancelPriorityBtn = document.getElementById('cancel-priority');
+        const priorityAlert = document.getElementById('priority-alert');
+
+        // Tools System
+        const signalModal = document.getElementById('signal-modal');
+        const signalNumber = document.getElementById('signal-number');
+        const activateSignalBtn = document.getElementById('activate-signal');
+        const cancelSignalBtn = document.getElementById('cancel-signal');
+        const signalAlert = document.getElementById('signal-alert');
+        
+        const supervisorModal = document.getElementById('supervisor-modal');
+        const supervisorResult = document.getElementById('supervisor-result');
+        const cancelSupervisorBtn = document.getElementById('cancel-supervisor');
+        
+        const guideModal = document.getElementById('guide-modal');
+        const cancelGuideBtn = document.getElementById('cancel-guide');
+        
+        const docModal = document.getElementById('doc-modal');
+        const cancelDocBtn = document.getElementById('cancel-doc');
+        
+        const settingsModal = document.getElementById('settings-modal');
+        const cancelSettingsBtn = document.getElementById('cancel-settings');
+        const saveSettingsBtn = document.getElementById('save-settings');
+        
+        const reportsModal = document.getElementById('reports-modal');
+        const closeReportsBtn = document.getElementById('close-reports');
+        const exportReportBtn = document.getElementById('export-report');
+
+        // Update Unit Modal
+        const updateUnitModal = document.getElementById('update-unit-modal');
+        const updateUnitId = document.getElementById('update-unit-id');
+        const cancelUpdateBtn = document.getElementById('cancel-update');
+
+        // Modal Close Buttons
+        const closeButtons = document.querySelectorAll('.close-modal');
+
+        // ===== UTILITY FUNCTIONS =====
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function formatDuration(ms) {
+            const seconds = Math.floor(ms / 1000);
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function generateId(prefix) {
+            const timestamp = new Date().getTime();
+            const random = Math.floor(Math.random() * 1000);
+            return `${prefix}-${timestamp}-${random}`;
+        }
+
+        function playNotificationSound() {
+            if (state.settings.soundNotifications) {
+                // In a real application, this would play an actual sound
+                console.log('Notification sound played');
+            }
+        }
+
+        function showNotification(title, message, type = 'info') {
+            playNotificationSound();
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert-item ${type}`;
+            notification.innerHTML = `
+                <div class="alert-icon ${type}">
+                    <i class="fas fa-${getNotificationIcon(type)}"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">${title}</div>
+                    <div class="alert-description">${message}</div>
+                </div>
+                <div class="alert-time">${formatTime(new Date())}</div>
+                <button class="alert-close">&times;</button>
+            `;
+
+            // Add to active alerts
+            activeAlertsContainer.appendChild(notification);
+
+            // Add close functionality
+            notification.querySelector('.alert-close').addEventListener('click', () => {
+                notification.remove();
+            });
+
+            // Auto-remove after 10 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 10000);
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                'info': 'info-circle',
+                'success': 'check-circle',
+                'warning': 'exclamation-triangle',
+                'danger': 'exclamation-circle',
+                'priority': '-bullhorn',
+                'signal': '-broadcast-tower'
+            };
+            return icons[type] || 'info-circle';
+        }
+
+        // ===== INITIALIZATION =====
         function init() {
-            // Check if user is already logged in
+            // Load saved state
+            loadSavedState();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Initialize UI
+            initializeUI();
+            
+            // Start background processes
+            startBackgroundProcesses();
+            
+            console.log('Lakeview Comms CAD initialized successfully');
+        }
+
+        function loadSavedState() {
+            // Load user data
             const savedUser = localStorage.getItem('lkv_user');
+            const savedShiftStart = localStorage.getItem('lkv_shift_start');
+            const savedSettings = localStorage.getItem('lkv_settings');
+            const savedData = localStorage.getItem('lkv_data');
+
             if (savedUser) {
                 state.user = JSON.parse(savedUser);
-                state.shiftStart = new Date(localStorage.getItem('lkv_shift_start'));
-                startCAD();
+                state.shiftStart = new Date(savedShiftStart);
             }
 
-            // Event Listeners
+            if (savedSettings) {
+                state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
+            }
+
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                state.calls = data.calls || [];
+                state.units = data.units || [];
+                state.callCounter = data.callCounter || 1;
+                state.unitCounter = data.unitCounter || 101;
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('lkv_user', JSON.stringify(state.user));
+            localStorage.setItem('lkv_shift_start', state.shiftStart.toISOString());
+            localStorage.setItem('lkv_settings', JSON.stringify(state.settings));
+            
+            const data = {
+                calls: state.calls,
+                units: state.units,
+                callCounter: state.callCounter,
+                unitCounter: state.unitCounter
+            };
+            localStorage.setItem('lkv_data', JSON.stringify(data));
+        }
+
+        function setupEventListeners() {
+            // Authentication
             loginForm.addEventListener('submit', handleLogin);
-            toolsBtn.addEventListener('click', () => toolsPanel.style.display = 'block');
-            closeToolsBtn.addEventListener('click', () => toolsPanel.style.display = 'none');
-            newCallBtn.addEventListener('click', () => showModal('new-call-modal'));
+            closeConfirmationBtn.addEventListener('click', closeConfirmation);
             signOutBtn.addEventListener('click', () => showModal('signout-modal'));
+            cancelSignoutBtn.addEventListener('click', () => hideModal('signout-modal'));
+            confirmSignoutBtn.addEventListener('click', handleSignOut);
+
+            // Tools System
+            toolsBtn.addEventListener('click', toggleToolsPanel);
+            closeToolsBtn.addEventListener('click', () => hideModal('tools-panel'));
+            
+            // Tool Options
+            document.querySelectorAll('.tool-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const tool = this.getAttribute('data-tool');
+                    handleToolSelection(tool);
+                });
+            });
+
+            // Call Management
+            newCallBtn.addEventListener('click', () => showModal('new-call-modal'));
+            cancelCallBtn.addEventListener('click', () => hideModal('new-call-modal'));
+            newCallForm.addEventListener('submit', handleNewCall);
+            refreshCallsBtn.addEventListener('click', refreshCalls);
+
+            // Unit Management
+            addUnitBtn.addEventListener('click', () => showModal('add-unit-modal'));
+            cancelUnitBtn.addEventListener('click', () => hideModal('add-unit-modal'));
+            addUnitForm.addEventListener('submit', handleAddUnit);
+            refreshUnitsBtn.addEventListener('click', refreshUnits);
+
+            // Active Incident
             addNarrativeBtn.addEventListener('click', addNarrativeEntry);
             narrativeInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') addNarrativeEntry();
             });
             assignBtn.addEventListener('click', assignUnitToCall);
             unitSearch.addEventListener('input', handleUnitSearch);
+            closeIncidentBtn.addEventListener('click', closeActiveIncident);
+
+            // Priority System
             priorityBtn.addEventListener('click', () => showModal('priority-modal'));
-
-            // Setup custom selects
-            setupCustomSelect(positionSelect);
-            setupCustomSelect(unitSelect);
-
-            // Load initial data
-            loadInitialData();
-        }
-
-        // Setup custom select functionality
-        function setupCustomSelect(selectElement) {
-            const header = selectElement.querySelector('.custom-select-header');
-            const options = selectElement.querySelector('.custom-select-options');
-            
-            header.addEventListener('click', () => {
-                options.style.display = options.style.display === 'block' ? 'none' : 'block';
-            });
-            
-            options.querySelectorAll('.custom-select-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    header.querySelector('span').textContent = option.textContent;
-                    options.style.display = 'none';
+            cancelPriorityBtn.addEventListener('click', () => hideModal('priority-modal'));
+            document.querySelectorAll('.priority-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const situationType = this.getAttribute('data-type');
+                    activatePrioritySituation(situationType);
+                    hideModal('priority-modal');
                 });
             });
-            
-            // Close when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!selectElement.contains(e.target)) {
-                    options.style.display = 'none';
+
+            // Signal System
+            activateSignalBtn.addEventListener('click', activateSignal);
+            cancelSignalBtn.addEventListener('click', () => hideModal('signal-modal'));
+
+            // Supervisor System
+            cancelSupervisorBtn.addEventListener('click', () => hideModal('supervisor-modal'));
+
+            // Guide System
+            cancelGuideBtn.addEventListener('click', () => hideModal('guide-modal'));
+
+            // Documentation
+            cancelDocBtn.addEventListener('click', () => hideModal('doc-modal'));
+
+            // Settings
+            cancelSettingsBtn.addEventListener('click', () => hideModal('settings-modal'));
+            saveSettingsBtn.addEventListener('click', saveSettings);
+
+            // Reports
+            closeReportsBtn.addEventListener('click', () => hideModal('reports-modal'));
+            exportReportBtn.addEventListener('click', exportReport);
+
+            // Update Unit Modal
+            cancelUpdateBtn.addEventListener('click', () => hideModal('update-unit-modal'));
+            document.querySelectorAll('.update-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    handleUpdateAction(action);
+                });
+            });
+
+            // Status Options
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.closest('.form-group');
+                    parent.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (parent.querySelector('#unit-id')) {
+                        state.selectedUnitStatus = this.getAttribute('data-value');
+                    } else {
+                        state.selectedPriority = this.getAttribute('data-value');
+                    }
+                });
+            });
+
+            // Department Selection
+            document.querySelectorAll('.department-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.department-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    state.selectedDepartment = this.getAttribute('data-department');
+                });
+            });
+
+            // Modal Close Handlers
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (event) => {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+                if (!event.target.closest('.tools-panel') && !event.target.closest('.tools-btn')) {
+                    hideModal('tools-panel');
                 }
             });
+
+            // Close search results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.unit-search')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+            // Handle page unload
+            window.addEventListener('beforeunload', saveState);
         }
 
-        // Handle user login
+        function initializeUI() {
+            // Apply settings
+            applySettings();
+            
+            // If user is logged in, start CAD
+            if (state.user) {
+                startCAD();
+            } else {
+                showLoginScreen();
+            }
+            
+            // Render initial data
+            renderCallList();
+            renderUnitList();
+            updateUnitSelect();
+            updateStatistics();
+        }
+
+        function startBackgroundProcesses() {
+            // Auto-save every 30 seconds
+            setInterval(saveState, 30000);
+            
+            // Auto-refresh data based on settings
+            setInterval(() => {
+                refreshCalls();
+                refreshUnits();
+            }, state.settings.refreshInterval);
+        }
+
+        // ===== AUTHENTICATION =====
         function handleLogin(e) {
             e.preventDefault();
             
             const discordId = document.getElementById('discord-id').value;
             const robloxUsername = document.getElementById('roblox-username').value;
-            const position = positionSelect.querySelector('.custom-select-header span').textContent;
+            const position = document.getElementById('position').value;
             
-            if (position === 'Select your position') {
-                alert('Please select your position');
+            if (!discordId || !robloxUsername || !position) {
+                showNotification('Login Error', 'Please fill in all fields', 'danger');
                 return;
             }
             
@@ -1486,34 +3103,46 @@
             state.shiftStart = new Date();
             
             // Save to localStorage
-            localStorage.setItem('lkv_user', JSON.stringify(state.user));
-            localStorage.setItem('lkv_shift_start', state.shiftStart.toISOString());
+            saveState();
             
             // Show confirmation modal
             showModal('confirmation-modal');
+            
+            showNotification('Login Successful', `Welcome ${position} ${discordId}`, 'success');
         }
 
-        // Start the CAD application
+        function closeConfirmation() {
+            hideModal('confirmation-modal');
+            startCAD();
+        }
+
         function startCAD() {
             loginScreen.style.display = 'none';
             cadApp.style.display = 'grid';
-            
-            // Show tools button
             toolsBtn.style.display = 'flex';
             
             // Update user info
-            document.getElementById('display-user-id').textContent = state.user.discordId;
+            displayUserId.textContent = state.user.discordId;
             
             // Start shift timer
             updateShiftTimer();
             setInterval(updateShiftTimer, 1000);
             
-            // Load initial data
+            // Load data
             loadInitialData();
+            
+            showNotification('CAD System', 'Lakeview Comms CAD is now active', 'success');
         }
 
-        // Update shift timer
+        function showLoginScreen() {
+            loginScreen.style.display = 'flex';
+            cadApp.style.display = 'none';
+            toolsBtn.style.display = 'none';
+        }
+
         function updateShiftTimer() {
+            if (!state.shiftStart) return;
+            
             const now = new Date();
             const diff = now - state.shiftStart;
             
@@ -1521,63 +3150,900 @@
             const minutes = Math.floor((diff % 3600000) / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
             
-            document.getElementById('shift-timer').textContent = 
-                `Shift: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            shiftTimer.textContent = `Shift: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Load initial data
+        function handleSignOut() {
+            hideModal('signout-modal');
+            
+            // Show loading for 2 seconds
+            setTimeout(() => {
+                // Clear localStorage
+                localStorage.removeItem('lkv_user');
+                localStorage.removeItem('lkv_shift_start');
+                localStorage.removeItem('lkv_data');
+                
+                // Show success screen
+                cadApp.style.display = 'none';
+                signoutSuccess.style.display = 'flex';
+                
+                // Start countdown
+                let countdown = 10;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        // In a real application, this would close the tab
+                        signoutSuccess.innerHTML = `
+                            <div class="success-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h1 class="success-title">Session Ended</h1>
+                            <p class="success-message">Your session has been logged successfully. You can now safely close this window.</p>
+                        `;
+                    }
+                }, 1000);
+            }, 2000);
+        }
+
+        // ===== CALL MANAGEMENT =====
+        function handleNewCall(e) {
+            e.preventDefault();
+            
+            const callType = document.getElementById('call-type').value;
+            const location = document.getElementById('call-location').value;
+            const callerInfo = document.getElementById('caller-info').value;
+            const initialNarrative = document.getElementById('initial-narrative').value;
+            const priority = state.selectedPriority;
+            
+            const callId = `I-${new Date().getFullYear()}-${state.callCounter.toString().padStart(4, '0')}`;
+            state.callCounter++;
+            
+            const newCall = {
+                id: callId,
+                type: callType,
+                location,
+                callerInfo,
+                priority,
+                narrative: initialNarrative ? [{
+                    timestamp: new Date(),
+                    text: initialNarrative,
+                    user: state.user.discordId
+                }] : [],
+                status: 'active',
+                assignedUnits: [],
+                createdAt: new Date(),
+                createdBy: state.user.discordId
+            };
+            
+            state.calls.push(newCall);
+            renderCallList();
+            updateStatistics();
+            
+            // Close modal and reset form
+            hideModal('new-call-modal');
+            newCallForm.reset();
+            
+            // Select the new call
+            selectCall(newCall.id);
+            
+            showNotification('New Call Created', `Incident ${callId} - ${callType}`, 'info');
+        }
+
+        function renderCallList() {
+            if (state.calls.length === 0) {
+                callList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <p>No active incidents</p>
+                        <p class="text-sm">Create a new call to get started</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            callList.innerHTML = '';
+            state.calls.forEach(call => {
+                const callElement = document.createElement('div');
+                callElement.className = `call-item priority-${call.priority} ${state.activeCall && state.activeCall.id === call.id ? 'active' : ''}`;
+                callElement.dataset.id = call.id;
+                
+                const priorityText = call.priority === 'high' ? 'HIGH' : 
+                                   call.priority === 'medium' ? 'MEDIUM' : 'LOW';
+                
+                callElement.innerHTML = `
+                    <div class="call-header">
+                        <div class="call-id">${call.id}</div>
+                        <div class="call-priority">${priorityText}</div>
+                    </div>
+                    <div class="call-location">${call.location}</div>
+                    <div class="call-type">${call.type}</div>
+                    <div class="call-meta">
+                        <span>${formatTime(call.createdAt)}</span>
+                        <span>${call.assignedUnits.length} units</span>
+                    </div>
+                `;
+                
+                callElement.addEventListener('click', () => selectCall(call.id));
+                callList.appendChild(callElement);
+            });
+        }
+
+        function selectCall(callId) {
+            state.activeCall = state.calls.find(call => call.id === callId);
+            
+            if (!state.activeCall) return;
+            
+            // Update the active incident header
+            const priorityText = state.activeCall.priority === 'high' ? 'HIGH PRIORITY' : 
+                               state.activeCall.priority === 'medium' ? 'MEDIUM PRIORITY' : 'LOW PRIORITY';
+            
+            activeIncidentHeader.innerHTML = `
+                <div class="incident-title">
+                    <div class="incident-id">${state.activeCall.id}</div>
+                    <div class="incident-priority">${priorityText}</div>
+                </div>
+                <div class="incident-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value">${state.activeCall.location}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Call Type</div>
+                        <div class="detail-value">${state.activeCall.type}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Caller</div>
+                        <div class="detail-value">${state.activeCall.callerInfo || 'Unknown'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Received</div>
+                        <div class="detail-value">${formatTime(state.activeCall.createdAt)}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Update narrative log
+            renderNarrativeLog();
+            
+            // Update assigned units
+            renderAssignedUnits();
+            
+            // Enable inputs
+            narrativeInput.disabled = false;
+            addNarrativeBtn.disabled = false;
+            closeIncidentBtn.disabled = false;
+            
+            // Re-render call list to update active state
+            renderCallList();
+        }
+
+        function refreshCalls() {
+            // In a real application, this would fetch from an API
+            renderCallList();
+            showNotification('Data Refreshed', 'Call list updated', 'info');
+        }
+
+        function closeActiveIncident() {
+            if (!state.activeCall) return;
+            
+            if (confirm(`Are you sure you want to close incident ${state.activeCall.id}?`)) {
+                state.activeCall.status = 'closed';
+                state.activeCall.closedAt = new Date();
+                state.activeCall.closedBy = state.user.discordId;
+                
+                // Add closing narrative
+                state.activeCall.narrative.push({
+                    timestamp: new Date(),
+                    text: `Incident closed by ${state.user.discordId}`,
+                    user: state.user.discordId
+                });
+                
+                // Remove from active calls
+                state.calls = state.calls.filter(call => call.id !== state.activeCall.id);
+                state.activeCall = null;
+                
+                // Update UI
+                renderCallList();
+                renderActiveIncidentEmpty();
+                updateStatistics();
+                
+                showNotification('Incident Closed', 'The incident has been successfully closed', 'success');
+            }
+        }
+
+        // ===== UNIT MANAGEMENT =====
+        function handleAddUnit(e) {
+            e.preventDefault();
+            
+            const unitId = document.getElementById('unit-id').value;
+            const rank = document.getElementById('unit-rank').value;
+            const location = document.getElementById('unit-location').value;
+            const status = state.selectedUnitStatus;
+            const officerName = document.getElementById('officer-name').value;
+            const recentCode = document.getElementById('recent-code').value;
+            const department = state.selectedDepartment;
+            
+            // Validate unit ID
+            const unitNum = parseInt(unitId);
+            if (unitNum < 101 || unitNum > 499) {
+                showNotification('Validation Error', 'Unit ID must be between 101 and 499', 'danger');
+                return;
+            }
+            
+            // Check if unit ID already exists
+            if (state.units.some(unit => unit.id === unitId)) {
+                showNotification('Validation Error', `Unit ${unitId} already exists`, 'danger');
+                return;
+            }
+            
+            const newUnit = {
+                id: unitId,
+                officer: officerName,
+                rank,
+                location,
+                status,
+                recentCode,
+                department,
+                statusTime: new Date(),
+                addedTime: new Date(),
+                addedBy: state.user.discordId
+            };
+            
+            state.units.push(newUnit);
+            renderUnitList();
+            updateUnitSelect();
+            updateStatistics();
+            
+            // Close modal and reset form
+            hideModal('add-unit-modal');
+            addUnitForm.reset();
+            
+            showNotification('Unit Added', `Unit ${unitId} - ${officerName} added to system`, 'success');
+        }
+
+        function renderUnitList() {
+            if (state.units.length === 0) {
+                unitList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <p>No units available</p>
+                        <p class="text-sm">Add units to the status board</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group units by department
+            const departments = {
+                'law-enforcement': state.units.filter(u => u.department === 'law-enforcement'),
+                'fire': state.units.filter(u => u.department === 'fire')
+            };
+            
+            unitList.innerHTML = '';
+            
+            // Render Law Enforcement Department
+            if (departments['law-enforcement'].length > 0) {
+                const lawEnforcementSection = document.createElement('div');
+                lawEnforcementSection.className = 'department-section';
+                
+                lawEnforcementSection.innerHTML = `
+                    <div class="department-header">
+                        <img src="https://ik.imagekit.io/seqcqjmzq/Lakview%20Police.webp?updatedAt=1762546742643" alt="Law Enforcement" class="department-logo">
+                        <div class="department-title">Lakeview Law Enforcement</div>
+                    </div>
+                `;
+                
+                // Organize by rank
+                const lawRanks = organizeByRank(departments['law-enforcement'], 'law');
+                Object.keys(lawRanks).forEach(rankGroup => {
+                    const rankSection = document.createElement('div');
+                    rankSection.className = 'rank-section';
+                    rankSection.innerHTML = `<div class="rank-title">${rankGroup}</div>`;
+                    
+                    lawRanks[rankGroup].forEach(unit => {
+                        rankSection.appendChild(createUnitElement(unit));
+                    });
+                    
+                    lawEnforcementSection.appendChild(rankSection);
+                });
+                
+                unitList.appendChild(lawEnforcementSection);
+            }
+            
+            // Render Fire Department
+            if (departments['fire'].length > 0) {
+                const fireSection = document.createElement('div');
+                fireSection.className = 'department-section';
+                
+                fireSection.innerHTML = `
+                    <div class="department-header">
+                        <img src="https://ik.imagekit.io/seqcqjmzq/Lakeview%20Fire.webp?updatedAt=1762546987614" alt="Fire District" class="department-logo">
+                        <div class="department-title">Lakeview City Fire District</div>
+                    </div>
+                `;
+                
+                // Organize by rank
+                const fireRanks = organizeByRank(departments['fire'], 'fire');
+                Object.keys(fireRanks).forEach(rankGroup => {
+                    const rankSection = document.createElement('div');
+                    rankSection.className = 'rank-section';
+                    rankSection.innerHTML = `<div class="rank-title">${rankGroup}</div>`;
+                    
+                    fireRanks[rankGroup].forEach(unit => {
+                        rankSection.appendChild(createUnitElement(unit));
+                    });
+                    
+                    fireSection.appendChild(rankSection);
+                });
+                
+                unitList.appendChild(fireSection);
+            }
+        }
+
+        function organizeByRank(units, department) {
+            const lawRanks = {
+                'Command Staff': ['Commissioner', 'Chief of Police', 'Deputy Chief'],
+                'Supervisors': ['Captain', 'Lieutenant', 'Sergeant'],
+                'Officers': ['Corporal', 'Senior Officer', 'Detective', 'Officer', 'Deputy'],
+                'Support': ['Cadet', 'Trainee'],
+                'Other': []
+            };
+            
+            const fireRanks = {
+                'Command Staff': ['Chief', 'Deputy Chief', 'Assistant Chief', 'Battalion Chief'],
+                'Company Officers': ['Captain', 'Lieutenant'],
+                'Firefighters': ['Engineer', 'Firefighter', 'Paramedic', 'EMT'],
+                'Support': ['Probationary', 'Trainee'],
+                'Other': []
+            };
+            
+            const rankStructure = department === 'law-enforcement' ? lawRanks : fireRanks;
+            const organized = {};
+            
+            // Initialize all rank groups
+            Object.keys(rankStructure).forEach(group => {
+                organized[group] = [];
+            });
+            
+            // Sort units into rank groups
+            units.forEach(unit => {
+                let placed = false;
+                for (const [group, ranks] of Object.entries(rankStructure)) {
+                    if (ranks.some(rank => unit.rank.toLowerCase().includes(rank.toLowerCase()))) {
+                        organized[group].push(unit);
+                        placed = true;
+                        break;
+                    }
+                }
+                
+                if (!placed) {
+                    organized['Other'].push(unit);
+                }
+            });
+            
+            // Remove empty groups
+            Object.keys(organized).forEach(group => {
+                if (organized[group].length === 0) {
+                    delete organized[group];
+                }
+            });
+            
+            return organized;
+        }
+
+        function createUnitElement(unit) {
+            const unitElement = document.createElement('div');
+            unitElement.className = 'unit-item';
+            unitElement.dataset.id = unit.id;
+            
+            // Calculate time since status change
+            const statusTime = new Date(unit.statusTime);
+            const now = new Date();
+            const diffMs = now - statusTime;
+            const diffMins = Math.floor(diffMs / 60000);
+            
+            // Calculate time since unit was added
+            const addedTime = new Date(unit.addedTime);
+            const totalDiffMs = now - addedTime;
+            const totalDiffMins = Math.floor(totalDiffMs / 60000);
+            
+            // Determine status class
+            let statusClass = 'available';
+            if (unit.status === '10-6') statusClass = 'busy';
+            else if (unit.status === '10-7') statusClass = 'out-of-service';
+            else if (unit.status === '10-97') statusClass = 'en-route';
+            
+            // Determine badge icon based on department
+            let badgeIcon = '';
+            if (unit.department === 'law-enforcement') {
+                badgeIcon = '<i class="fas fa-shield-alt unit-badge"></i>';
+            } else if (unit.department === 'fire') {
+                badgeIcon = '<i class="fas fa-fire unit-badge"></i>';
+            }
+            
+            unitElement.innerHTML = `
+                <div class="unit-status ${statusClass}"></div>
+                <div class="unit-info">
+                    <div class="unit-id">${badgeIcon} Unit ${unit.id}</div>
+                    <div class="unit-officer">${unit.officer} • ${unit.rank}</div>
+                    <div class="unit-location">${unit.location}</div>
+                    <div class="unit-status-time">Status: ${unit.status} (${diffMins}m ago) | Added: ${totalDiffMins}m ago</div>
+                </div>
+                <div class="unit-actions">
+                    <button class="unit-action-btn update-btn" data-id="${unit.id}">
+                        <i class="fas fa-edit"></i> Update
+                    </button>
+                </div>
+            `;
+            
+            // Add update button event
+            unitElement.querySelector('.update-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                state.selectedUnit = unit.id;
+                updateUnitId.textContent = unit.id;
+                showModal('update-unit-modal');
+            });
+            
+            return unitElement;
+        }
+
+        function updateUnitSelect() {
+            unitSelect.innerHTML = '<option value="">Select a unit to assign</option>';
+            state.units.forEach(unit => {
+                const option = document.createElement('option');
+                option.value = unit.id;
+                option.textContent = `Unit ${unit.id} - ${unit.officer} (${unit.status})`;
+                unitSelect.appendChild(option);
+            });
+        }
+
+        function refreshUnits() {
+            // In a real application, this would fetch from an API
+            renderUnitList();
+            updateStatistics();
+            showNotification('Data Refreshed', 'Unit list updated', 'info');
+        }
+
+        function handleUpdateAction(action) {
+            if (!state.selectedUnit) return;
+            
+            const unit = state.units.find(u => u.id === state.selectedUnit);
+            if (!unit) return;
+            
+            switch(action) {
+                case 'status':
+                    const newStatus = prompt('Enter new status (10-8, 10-6, 10-7, 10-97):', unit.status);
+                    if (newStatus && ['10-8', '10-6', '10-7', '10-97'].includes(newStatus)) {
+                        unit.status = newStatus;
+                        unit.statusTime = new Date();
+                        renderUnitList();
+                        updateUnitSelect();
+                        showNotification('Unit Updated', `Unit ${unit.id} status changed to ${newStatus}`, 'success');
+                    }
+                    break;
+                case 'location':
+                    const newLocation = prompt('Enter new location:', unit.location);
+                    if (newLocation) {
+                        unit.location = newLocation;
+                        renderUnitList();
+                        showNotification('Unit Updated', `Unit ${unit.id} location updated`, 'success');
+                    }
+                    break;
+                case 'remove':
+                    if (confirm(`Are you sure you want to remove Unit ${unit.id}?`)) {
+                        state.units = state.units.filter(u => u.id !== state.selectedUnit);
+                        renderUnitList();
+                        updateUnitSelect();
+                        updateStatistics();
+                        showNotification('Unit Removed', `Unit ${unit.id} has been removed`, 'warning');
+                    }
+                    break;
+                case 'transfer':
+                    // Implementation for unit transfer
+                    showNotification('Feature Coming Soon', 'Unit transfer functionality will be available in the next update', 'info');
+                    break;
+            }
+            
+            hideModal('update-unit-modal');
+            state.selectedUnit = null;
+        }
+
+        // ===== ACTIVE INCIDENT MANAGEMENT =====
+        function renderNarrativeLog() {
+            if (!state.activeCall || state.activeCall.narrative.length === 0) {
+                narrativeLog.innerHTML = '<div class="text-center text-gray">No narrative entries yet</div>';
+                return;
+            }
+            
+            narrativeLog.innerHTML = '';
+            state.activeCall.narrative.forEach(entry => {
+                const entryElement = document.createElement('div');
+                entryElement.className = 'narrative-entry';
+                entryElement.innerHTML = `
+                    <div class="narrative-time">[${formatTime(entry.timestamp)}] ${entry.user || 'System'}</div>
+                    <div>${entry.text}</div>
+                `;
+                narrativeLog.appendChild(entryElement);
+            });
+            
+            // Scroll to bottom
+            narrativeLog.scrollTop = narrativeLog.scrollHeight;
+        }
+
+        function renderAssignedUnits() {
+            if (!state.activeCall || state.activeCall.assignedUnits.length === 0) {
+                assignedUnits.innerHTML = '<div class="text-center text-gray">No units assigned</div>';
+                return;
+            }
+            
+            assignedUnits.innerHTML = '';
+            state.activeCall.assignedUnits.forEach(unitId => {
+                const unit = state.units.find(u => u.id === unitId);
+                if (!unit) return;
+                
+                const unitTag = document.createElement('div');
+                unitTag.className = 'unit-tag';
+                unitTag.innerHTML = `
+                    Unit ${unitId}
+                    <button class="unit-tag-remove" data-id="${unitId}">&times;</button>
+                `;
+                
+                unitTag.querySelector('.unit-tag-remove').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    state.activeCall.assignedUnits = state.activeCall.assignedUnits.filter(id => id !== unitId);
+                    renderAssignedUnits();
+                    showNotification('Unit Unassigned', `Unit ${unitId} removed from incident`, 'warning');
+                });
+                
+                assignedUnits.appendChild(unitTag);
+            });
+        }
+
+        function addNarrativeEntry() {
+            const text = narrativeInput.value.trim();
+            if (!text || !state.activeCall) return;
+            
+            const entry = {
+                timestamp: new Date(),
+                text,
+                user: state.user.discordId
+            };
+            
+            state.activeCall.narrative.push(entry);
+            renderNarrativeLog();
+            
+            // Clear input
+            narrativeInput.value = '';
+            
+            showNotification('Narrative Added', 'New entry added to incident log', 'info');
+        }
+
+        function assignUnitToCall() {
+            const unitId = unitSelect.value;
+            if (!unitId || !state.activeCall) return;
+
+            if (!state.activeCall.assignedUnits.includes(unitId)) {
+                state.activeCall.assignedUnits.push(unitId);
+                renderAssignedUnits();
+                
+                // Add narrative entry
+                state.activeCall.narrative.push({
+                    timestamp: new Date(),
+                    text: `Unit ${unitId} assigned to incident.`,
+                    user: state.user.discordId
+                });
+                renderNarrativeLog();
+
+                // Clear selection
+                unitSelect.value = '';
+                unitSearch.value = '';
+                
+                showNotification('Unit Assigned', `Unit ${unitId} assigned to incident`, 'success');
+            } else {
+                showNotification('Assignment Error', `Unit ${unitId} is already assigned`, 'warning');
+            }
+        }
+
+        function handleUnitSearch() {
+            const query = unitSearch.value.toLowerCase();
+            if (query.length === 0) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = state.units.filter(unit => 
+                unit.id.toLowerCase().includes(query) || 
+                unit.officer.toLowerCase().includes(query) ||
+                unit.rank.toLowerCase().includes(query)
+            );
+
+            searchResults.innerHTML = '';
+            if (results.length > 0) {
+                results.forEach(unit => {
+                    const resultElement = document.createElement('div');
+                    resultElement.className = 'search-result';
+                    resultElement.textContent = `Unit ${unit.id} - ${unit.officer} (${unit.rank})`;
+                    resultElement.addEventListener('click', () => {
+                        unitSelect.value = unit.id;
+                        unitSearch.value = '';
+                        searchResults.style.display = 'none';
+                    });
+                    searchResults.appendChild(resultElement);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        }
+
+        function renderActiveIncidentEmpty() {
+            activeIncidentHeader.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-binoculars"></i>
+                    </div>
+                    <p>No incident selected</p>
+                    <p class="text-sm">Select an incident from the queue to view details</p>
+                </div>
+            `;
+            
+            narrativeLog.innerHTML = '';
+            assignedUnits.innerHTML = '';
+            narrativeInput.disabled = true;
+            addNarrativeBtn.disabled = true;
+            closeIncidentBtn.disabled = true;
+        }
+
+        // ===== PRIORITY SYSTEM =====
+        function activatePrioritySituation(situationType) {
+            state.activePrioritySituation = situationType;
+            
+            // Extract code from situation type (e.g., "10-80 Pursuit" -> "10-80")
+            const code = situationType.split(' ')[0];
+            
+            // Show priority alert
+            priorityAlert.textContent = `${situationType} ACTIVE`;
+            priorityAlert.style.display = 'block';
+            
+            // Add animation for slashing effect
+            let slashVisible = true;
+            const slashInterval = setInterval(() => {
+                priorityAlert.textContent = slashVisible ? 
+                    `${situationType} ACTIVE` : 
+                    `${situationType} ACTIVE`;
+                slashVisible = !slashVisible;
+            }, 1000);
+            
+            // Add to active alerts
+            showNotification('Priority Situation', `${situationType} activated`, 'priority');
+            
+            // Add narrative entry if there's an active call
+            if (state.activeCall) {
+                state.activeCall.narrative.push({
+                    timestamp: new Date(),
+                    text: `Priority situation activated: ${situationType}`,
+                    user: 'System'
+                });
+                renderNarrativeLog();
+            }
+
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                clearInterval(slashInterval);
+                priorityAlert.style.display = 'none';
+                state.activePrioritySituation = null;
+            }, 10000);
+        }
+
+        // ===== TOOLS SYSTEM =====
+        function toggleToolsPanel() {
+            if (toolsPanel.style.display === 'block') {
+                hideModal('tools-panel');
+            } else {
+                showModal('tools-panel');
+            }
+        }
+
+        function handleToolSelection(tool) {
+            hideModal('tools-panel');
+            
+            switch(tool) {
+                case 'signal':
+                    showModal('signal-modal');
+                    break;
+                case 'supervisor':
+                    handleSupervisorRequest();
+                    break;
+                case 'guide':
+                    showModal('guide-modal');
+                    break;
+                case 'doc':
+                    showModal('doc-modal');
+                    break;
+                case 'settings':
+                    showModal('settings-modal');
+                    break;
+                case 'reports':
+                    showReports();
+                    break;
+            }
+        }
+
+        function activateSignal() {
+            const signalNum = signalNumber.value;
+            if (!signalNum) {
+                showNotification('Signal Error', 'Please enter a signal number', 'danger');
+                return;
+            }
+
+            state.activeSignals.push(signalNum);
+            
+            // Show signal alert
+            signalAlert.textContent = `Signal ${signalNum} Active`;
+            signalAlert.style.display = 'block';
+            
+            // Add to active alerts
+            showNotification('Signal Activated', `Emergency signal ${signalNum} activated`, 'signal');
+            
+            // Add narrative entry if there's an active call
+            if (state.activeCall) {
+                state.activeCall.narrative.push({
+                    timestamp: new Date(),
+                    text: `Signal ${signalNum} activated.`,
+                    user: 'System'
+                });
+                renderNarrativeLog();
+            }
+
+            hideModal('signal-modal');
+            signalNumber.value = '';
+
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                signalAlert.style.display = 'none';
+                state.activeSignals = state.activeSignals.filter(s => s !== signalNum);
+            }, 10000);
+        }
+
+        function handleSupervisorRequest() {
+            const supervisors = state.units.filter(unit => 
+                ['Sergeant', 'Lieutenant', 'Captain', 'Commander', 'Chief', 'Deputy Chief', 'Assistant Chief', 'Battalion Chief'].includes(unit.rank) &&
+                unit.status === '10-8'
+            );
+
+            if (supervisors.length > 0) {
+                const randomSupervisor = supervisors[Math.floor(Math.random() * supervisors.length)];
+                supervisorResult.innerHTML = `
+                    <div class="text-center">
+                        <div class="success-icon" style="font-size: 2.5rem; margin-bottom: 15px;">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 style="margin-bottom: 10px;">Supervisor Assigned</h3>
+                        <p style="margin-bottom: 15px;">Unit ${randomSupervisor.id} - ${randomSupervisor.officer}</p>
+                        <p class="text-sm">${randomSupervisor.rank} has been notified and will respond to the request.</p>
+                    </div>
+                `;
+                
+                showNotification('Supervisor Request', `${randomSupervisor.rank} ${randomSupervisor.officer} assigned`, 'success');
+            } else {
+                supervisorResult.innerHTML = `
+                    <div class="text-center">
+                        <div class="success-icon" style="font-size: 2.5rem; margin-bottom: 15px; color: var(--danger);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3 style="margin-bottom: 10px;">No Supervisors Available</h3>
+                        <p style="margin-bottom: 15px;">There are no supervisors currently available or 10-8.</p>
+                        <p class="text-sm">Please inform the requesting unit that no supervisor is available at this time.</p>
+                    </div>
+                `;
+                
+                showNotification('Supervisor Request', 'No supervisors available', 'warning');
+            }
+
+            showModal('supervisor-modal');
+        }
+
+        // ===== SETTINGS SYSTEM =====
+        function applySettings() {
+            // Apply theme
+            document.documentElement.setAttribute('data-theme', state.settings.theme);
+            
+            // Apply other settings as needed
+        }
+
+        function saveSettings() {
+            const theme = document.getElementById('theme-select').value;
+            const soundNotifications = document.getElementById('sound-notifications').checked;
+            const priorityNotifications = document.getElementById('priority-notifications').checked;
+            const refreshInterval = document.getElementById('refresh-interval').value;
+            
+            state.settings = {
+                theme,
+                soundNotifications,
+                priorityNotifications,
+                refreshInterval: parseInt(refreshInterval)
+            };
+            
+            applySettings();
+            saveState();
+            hideModal('settings-modal');
+            
+            showNotification('Settings Saved', 'Your preferences have been updated', 'success');
+        }
+
+        // ===== REPORTS SYSTEM =====
+        function showReports() {
+            updateStatistics();
+            showModal('reports-modal');
+        }
+
+        function updateStatistics() {
+            state.statistics.totalCalls = state.calls.length;
+            state.statistics.activeUnits = state.units.filter(u => u.status === '10-8').length;
+            state.statistics.highPriorityCount = state.calls.filter(c => c.priority === 'high').length;
+            state.statistics.mediumPriorityCount = state.calls.filter(c => c.priority === 'medium').length;
+            state.statistics.lowPriorityCount = state.calls.filter(c => c.priority === 'low').length;
+            
+            // Update UI
+            document.getElementById('total-calls').textContent = state.statistics.totalCalls;
+            document.getElementById('active-units').textContent = state.statistics.activeUnits;
+            document.getElementById('high-priority-count').textContent = state.statistics.highPriorityCount;
+            document.getElementById('medium-priority-count').textContent = state.statistics.mediumPriorityCount;
+            document.getElementById('low-priority-count').textContent = state.statistics.lowPriorityCount;
+        }
+
+        function exportReport() {
+            const report = {
+                timestamp: new Date().toISOString(),
+                user: state.user,
+                shiftStart: state.shiftStart,
+                statistics: state.statistics,
+                calls: state.calls,
+                units: state.units
+            };
+            
+            const dataStr = JSON.stringify(report, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            // In a real application, this would download the file
+            console.log('Report exported:', report);
+            showNotification('Report Exported', 'Shift report has been generated', 'success');
+        }
+
+        // ===== MODAL MANAGEMENT =====
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // ===== INITIAL DATA LOADING =====
         function loadInitialData() {
+            // In a real application, this would fetch from an API
+            // For now, we'll use the data from localStorage
+            
             renderCallList();
             renderUnitList();
             updateUnitSelect();
+            updateStatistics();
         }
 
-        // Show modal
-        function showModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-
-        // Close confirmation and start CAD
-        document.getElementById('close-confirmation').addEventListener('click', () => {
-            document.getElementById('confirmation-modal').style.display = 'none';
-            startCAD();
-        });
-
-        // Handle sign out
-        document.getElementById('confirm-signout').addEventListener('click', handleSignOut);
-
-        function handleSignOut() {
-            document.getElementById('signout-modal').style.display = 'none';
-            
-            // Clear localStorage
-            localStorage.removeItem('lkv_user');
-            localStorage.removeItem('lkv_shift_start');
-            
-            // Show success screen
-            cadApp.style.display = 'none';
-            document.getElementById('signout-success').style.display = 'flex';
-            
-            // Start countdown
-            let countdown = 10;
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                document.getElementById('countdown').textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    // In a real application, this would close the tab
-                    document.getElementById('signout-success').innerHTML = `
-                        <div class="success-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <h1 class="success-title">Tab Closed</h1>
-                        <p class="success-message">In a real application, this tab would have closed automatically.</p>
-                    `;
-                }
-            }, 1000);
-        }
-
-        // Initialize the application when DOM is loaded
+        // ===== INITIALIZE APPLICATION =====
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
