@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakeview Comms CAD - Complete Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #A2161C;
+            --primary-dark: #8A1318;
+            --primary-light: #B82A30;
+            --secondary: #010101;
+            --accent: #1A1A1A;
+            --card-bg: #121212;
+            --light: #F5F5F5;
+            --gray: #8A8A8A;
+            --gray-dark: #555;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --border: #333;
+            --border-light: #444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 20px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 30px 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(162, 22, 28, 0.1) 0%, rgba(26, 26, 26, 0.8) 100%);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            background: var(--accent);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .badge.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .badge.success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .badge.warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(162, 22, 28, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            color: var(--gray);
+        }
+
+        .card-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .card-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-list li:last-child {
+            border-bottom: none;
+        }
+
+        .card-list i {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        /* Feature Showcase */
+        .feature-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .feature-image {
+            background: var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .feature-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+
+        .feature-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--accent);
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        tr:hover {
+            background: rgba(162, 22, 28, 0.05);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--accent);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-title {
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        pre {
+            color: var(--light);
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            counter-reset: step-counter;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+
+        .step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .step-content p {
+            color: var(--gray);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .alert-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .alert.info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--info);
+            color: var(--info);
+        }
+
+        .alert.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* LKVC Branding */
+        .lkvc-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+        }
+
+        .lkvc-logo {
+            height: 24px;
+            width: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .feature-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 20px;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="https://ik.imagekit.io/seqcqjmzq/e595f6f1-e9e2-44a1-8b97-0c5afc307593.png?updatedAt=1756007991242" alt="Lakeview Comms CAD" class="logo">
+                <div class="nav-title">Lakeview Comms CAD</div>
+            </div>
+            
+            <nav class="nav-links" id="nav-links">
+                <a href="#overview" class="nav-link active">Overview</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#getting-started" class="nav-link">Getting Started</a>
+                <a href="#user-guide" class="nav-link">User Guide</a>
+                <a href="#technical" class="nav-link">Technical</a>
+                <a href="#support" class="nav-link">Support</a>
+            </nav>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Lakeview Comms CAD Documentation</h1>
+            <p class="hero-subtitle">Complete guide to using the Lakeview Communications Computer-Aided Dispatch system. Learn how to efficiently manage incidents, coordinate units, and utilize all features of our advanced dispatch platform.</p>
+            <div class="hero-badges">
+                <div class="badge primary">BETA Version 1.0</div>
+                <div class="badge success">Active Development</div>
+                <div class="badge warning">Restricted Access</div>
+            </div>
+        </section>
+
+        <!-- Overview Section -->
+        <section class="section" id="overview">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">System Overview</h2>
+                    <p class="section-subtitle">Understanding the Lakeview Comms CAD ecosystem</p>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="card-title">Purpose & Mission</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>The Lakeview Comms CAD system is designed to provide emergency communications personnel with a comprehensive, intuitive, and efficient platform for managing public safety operations in Lakeview City Roleplay.</p>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> Streamline emergency response coordination</li>
+                            <li><i class="fas fa-check"></i> Enhance situational awareness for all units</li>
+                            <li><i class="fas fa-check"></i> Maintain accurate incident documentation</li>
+                            <li><i class="fas fa-check"></i> Improve inter-departmental communication</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="card-title">LKVC Design Philosophy</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>The CAD interface follows the Lakeview City visual identity with a focus on clarity, professionalism, and user experience.</p>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> Dark theme for reduced eye strain during long shifts</li>
+                            <li><i class="fas fa-check"></i> Red accent colors matching LKVC branding</li>
+                            <li><i class="fas fa-check"></i> Intuitive three-panel layout for optimal workflow</li>
+                            <li><i class="fas fa-check"></i> Consistent iconography and visual hierarchy</li>
+                            <li><i class="fas fa-check"></i> Responsive design for various screen sizes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="card-title">Security & Access Control</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>The system implements robust security measures to protect sensitive law enforcement information and ensure only authorized personnel can access dispatch functions.</p>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> Discord ID authentication</li>
+                            <li><i class="fas fa-check"></i> Role-based permissions</li>
+                            <li><i class="fas fa-check"></i> Session tracking and logging</li>
+                            <li><i class="fas fa-check"></i> Secure data handling</li>
+                            <li><i class="fas fa-check"></i> Automatic session timeout protection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section" id="features">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">System Features</h2>
+                    <p class="section-subtitle">Comprehensive capabilities of the Lakeview Comms CAD</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="core">Core Features</button>
+                <button class="tab" data-tab="incident">Incident Management</button>
+                <button class="tab" data-tab="unit">Unit Management</button>
+                <button class="tab" data-tab="advanced">Advanced Functions</button>
+            </div>
+
+            <div class="tab-content active" id="core-tab">
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3 class="card-title">Real-time Dashboard</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Comprehensive overview of all active incidents, unit statuses, and priority situations in a single view.</p>
+                            <ul class="card-list">
+                                <li><i class="fas fa-check"></i> Live incident queue with priority coloring</li>
+                                <li><i class="fas fa-check"></i> Unit status board with department organization</li>
+                                <li><i class="fas fa-check"></i> Active incident management panel</li>
+                                <li><i class="fas fa-check"></i> Shift timer and user information</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="card-title">Authentication System</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Secure login with Discord integration and role-based access control.</p>
+                            <ul class="card-list">
+                                <li><i class="fas fa-check"></i> Discord ID verification</li>
+                                <li><i class="fas fa-check"></i> Roblox username association</li>
+                                <li><i class="fas fa-check"></i> Position-based permissions</li>
+                                <li><i class="fas fa-check"></i> Automatic shift logging</li>
+                                <li><i class="fas fa-check"></i> Session management</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <h3 class="card-title">LKVC Themed Interface</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Professional dark theme with Lakeview City branding and intuitive design.</p>
+                            <ul class="card-list">
+                                <li><i class="fas fa-check"></i> Dark color scheme for reduced eye strain</li>
+                                <li><i class="fas fa-check"></i> Red accent colors matching LKVC identity</li>
+                                <li><i class="fas fa-check"></i> Consistent visual language</li>
+                                <li><i class="fas fa-check"></i> Responsive design for all devices</li>
+                                <li><i class="fas fa-check"></i> Accessibility considerations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="incident-tab">
+                <div class="feature-showcase">
+                    <div class="feature-content">
+                        <h3>Comprehensive Incident Management</h3>
+                        <p>The incident management system allows dispatchers to create, track, and document all emergency calls with detailed information and real-time updates.</p>
+                        
+                        <div class="alert info">
+                            <div class="alert-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Priority System</div>
+                                <p>Incidents are categorized by priority (Low, Medium, High) with color-coded visual indicators for quick assessment.</p>
+                            </div>
+                        </div>
+                        
+                        <h4>Key Incident Features:</h4>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> Automated incident ID generation</li>
+                            <li><i class="fas fa-check"></i> Detailed call type categorization</li>
+                            <li><i class="fas fa-check"></i> Location mapping and verification</li>
+                            <li><i class="fas fa-check"></i> Caller information tracking</li>
+                            <li><i class="fas fa-check"></i> Timestamped narrative logging</li>
+                            <li><i class="fas fa-check"></i> Unit assignment and tracking</li>
+                        </ul>
+                    </div>
+                    <div class="feature-image">
+                        <img src="https://via.placeholder.com/500x300/121212/ffffff?text=Incident+Management+Interface" alt="Incident Management Interface">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="unit-tab">
+                <div class="feature-showcase">
+                    <div class="feature-image">
+                        <img src="https://via.placeholder.com/500x300/121212/ffffff?text=Unit+Management+Interface" alt="Unit Management Interface">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Advanced Unit Management</h3>
+                        <p>Track and coordinate all emergency response units with real-time status updates, location tracking, and assignment capabilities.</p>
+                        
+                        <div class="alert success">
+                            <div class="alert-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Drag & Drop Assignment</div>
+                                <p>Quickly assign units to incidents using intuitive drag and drop functionality between panels.</p>
+                            </div>
+                        </div>
+                        
+                        <h4>Unit Management Capabilities:</h4>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> Multi-department support (LE & Fire)</li>
+                            <li><i class="fas fa-check"></i> Rank-based organization</li>
+                            <li><i class="fas fa-check"></i> Status code tracking (10-8, 10-6, 10-7)</li>
+                            <li><i class="fas fa-check"></i> Location and activity logging</li>
+                            <li><i class="fas fa-check"></i> Officer identification</li>
+                            <li><i class="fas fa-check"></i> Quick status updates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="advanced-tab">
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="card-title">Priority Situations</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Quickly activate emergency protocols for critical incidents with predefined situation types.</p>
+                            <ul class="card-list">
+                                <li><i class="fas fa-check"></i> 10-80 Pursuit activation</li>
+                                <li><i class="fas fa-check"></i> 10-62 Kidnapping response</li>
+                                <li><i class="fas fa-check"></i> 10-64 Hostage situation</li>
+                                <li><i class="fas fa-check"></i> 10-13 Shooting incident</li>
+                                <li><i class="fas fa-check"></i> Visual and audio alerts</li>
+                                <li><i class="fas fa-check"></i> Automatic timer and protocols</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-scroll"></i>
+                            </div>
+                            <h3 class="card-title">Narrative Logging</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Comprehensive documentation system for maintaining accurate incident records.</p>
+                            <ul class="card-list">
+                                <li><i class="fas fa-check"></i> Timestamped entries</li>
+                                <li><i class="fas fa-check"></i> Chronological display</li>
+                                <li><i class="fas fa-check"></i> Real-time updates</li>
+                                <li><i class="fas fa-check"></i> Searchable history</li>
+                                <li><i class="fas fa-check"></i> Automatic entry generation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="card-title">Data Management</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Robust data handling with local storage and session management.</p>
+                            <ul class="card-list">
+                                <li><i class="fas fa-check"></i> Browser-based storage</li>
+                                <li><i class="fas fa-check"></i> Session persistence</li>
+                                <li><i class="fas fa-check"></i> Automatic data saving</li>
+                                <li><i class="fas fa-check"></i> Export capabilities</li>
+                                <li><i class="fas fa-check"></i> Backup and recovery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started Section -->
+        <section class="section" id="getting-started">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">Getting Started</h2>
+                    <p class="section-subtitle">Quick start guide for new dispatchers</p>
+                </div>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-content">
+                        <h3>System Access & Login</h3>
+                        <p>Access the Lakeview Comms CAD system through the provided URL. You'll need your Discord ID and Roblox username to log in.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="code-title">Login Requirements</div>
+                            </div>
+                            <pre>• Valid Discord ID
+• Associated Roblox Username  
+• Authorized Position (Dispatcher, Senior, Supervisor, Admin)
+• Secure Internet Connection</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-content">
+                        <h3>Understanding the Interface</h3>
+                        <p>Familiarize yourself with the three-panel layout designed for optimal workflow efficiency.</p>
+                        <div class="alert info">
+                            <div class="alert-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Interface Layout</div>
+                                <p>Left Panel: Incident Queue | Center Panel: Active Incident | Right Panel: Unit Status Board</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-content">
+                        <h3>Creating Your First Incident</h3>
+                        <p>Learn how to create and manage incidents with proper documentation and unit assignment.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="code-title">Incident Creation Steps</div>
+                            </div>
+                            <pre>1. Click "New Call" in Incident Queue
+2. Enter Call Type (e.g., "10-50 Traffic Accident")
+3. Specify Location (address/intersection)
+4. Add Caller Information (if available)
+5. Write Initial Narrative
+6. Set Priority Level (Low/Medium/High)
+7. Submit to create incident</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-content">
+                        <h3>Managing Units</h3>
+                        <p>Add units to the status board and assign them to incidents as needed.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="code-title">Unit Management</div>
+                            </div>
+                            <pre>• Add units via "Add Unit" button
+• Assign units via drag & drop
+• Update status codes (10-8, 10-6, 10-7)
+• Track locations and activities
+• Monitor unit availability</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-content">
+                        <h3>Advanced Operations</h3>
+                        <p>Utilize advanced features like priority situations and comprehensive narrative logging.</p>
+                        <div class="alert warning">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Priority Situations</div>
+                                <p>Use the Priority Situation button for emergency protocols like pursuits, shootings, and hostage situations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Details Section -->
+        <section class="section" id="technical">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">Technical Documentation</h2>
+                    <p class="section-subtitle">In-depth technical information for developers and administrators</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="card-title">System Architecture</h3>
+                </div>
+                <div class="card-content">
+                    <p>The Lakeview Comms CAD is built with modern web technologies focusing on performance, security, and user experience.</p>
+                    
+                    <h4>Frontend Technologies</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Technology</th>
+                                    <th>Version</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>HTML5</td>
+                                    <td>Latest</td>
+                                    <td>Semantic structure and accessibility</td>
+                                </tr>
+                                <tr>
+                                    <td>CSS3</td>
+                                    <td>Latest</td>
+                                    <td>Styling with custom properties and Grid/Flexbox</td>
+                                </tr>
+                                <tr>
+                                    <td>JavaScript</td>
+                                    <td>ES6+</td>
+                                    <td>Application logic and interactivity</td>
+                                </tr>
+                                <tr>
+                                    <td>Font Awesome</td>
+                                    <td>6.4.0</td>
+                                    <td>Icon library for consistent UI elements</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4>Data Management</h4>
+                    <p>The system uses browser-based storage with the following structure:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="code-title">Local Storage Schema</div>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                        <pre>localStorage.setItem('lkv_user', JSON.stringify({
+    discordId: 'User#1234',
+    robloxUsername: 'ExampleUser',
+    position: 'Dispatcher'
+}));
+
+localStorage.setItem('lkv_shift_start', '2023-11-15T08:00:00.000Z');
+
+// Application state managed in memory
+const state = {
+    user: {...},
+    shiftStart: Date,
+    calls: [...],
+    units: [...],
+    activeCall: {...},
+    // ... additional state properties
+};</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-15">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="card-title">Responsive Design</h3>
+                </div>
+                <div class="card-content">
+                    <p>The CAD interface is designed to work seamlessly across different devices and screen sizes.</p>
+                    
+                    <h4>Breakpoints</h4>
+                    <ul class="card-list">
+                        <li><i class="fas fa-desktop"></i> Desktop: 1024px+ (Full three-panel layout)</li>
+                        <li><i class="fas fa-tablet-alt"></i> Tablet: 768px - 1023px (Adaptive layout)</li>
+                        <li><i class="fas fa-mobile-alt"></i> Mobile: 480px - 767px (Stacked layout)</li>
+                        <li><i class="fas fa-mobile"></i> Small Mobile: < 480px (Optimized mobile view)</li>
+                    </ul>
+                    
+                    <h4>Browser Compatibility</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Browser</th>
+                                    <th>Version</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Chrome</td>
+                                    <td>80+</td>
+                                    <td><span style="color: var(--success)">Fully Supported</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Firefox</td>
+                                    <td>75+</td>
+                                    <td><span style="color: var(--success)">Fully Supported</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Safari</td>
+                                    <td>13+</td>
+                                    <td><span style="color: var(--success)">Fully Supported</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Edge</td>
+                                    <td>80+</td>
+                                    <td><span style="color: var(--success)">Fully Supported</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section class="section" id="support">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-life-ring"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">Support & Resources</h2>
+                    <p class="section-subtitle">Get help and access additional resources</p>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3 class="card-title">Frequently Asked Questions</h3>
+                    </div>
+                    <div class="card-content">
+                        <ul class="card-list">
+                            <li><strong>Q: How do I reset my session?</strong><br>A: Use the Sign Out button to properly end your session.</li>
+                            <li><strong>Q: Can I use the CAD on mobile?</strong><br>A: Yes, but desktop is recommended for full functionality.</li>
+                            <li><strong>Q: How are incidents prioritized?</strong><br>A: Based on severity: Low (routine), Medium (urgent), High (emergency).</li>
+                            <li><strong>Q: What do the status codes mean?</strong><br>A: 10-8=Available, 10-6=Busy, 10-7=Out of Service.</li>
+                            <li><strong>Q: How do I report a bug?</strong><br>A: Contact development team via Discord with details.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="card-title">Training Resources</h3>
+                    </div>
+                    <div class="card-content">
+                        <ul class="card-list">
+                            <li><i class="fas fa-file-pdf"></i> <a href="#">CAD Quick Start Guide</a></li>
+                            <li><i class="fas fa-file-pdf"></i> <a href="#">Advanced Features Manual</a></li>
+                            <li><i class="fas fa-video"></i> <a href="#">Video Tutorial Series</a></li>
+                            <li><i class="fas fa-clipboard-list"></i> <a href="#">Training Scenarios</a></li>
+                            <li><i class="fas fa-certificate"></i> <a href="#">Certification Program</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="card-title">Contact Support</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>For technical issues, training questions, or system feedback:</p>
+                        <ul class="card-list">
+                            <li><i class="fab fa-discord"></i> Discord: #cad-support channel</li>
+                            <li><i class="fas fa-envelope"></i> Email: cad-support@lakeviewcityrp.com</li>
+                            <li><i class="fas fa-clock"></i> Response Time: 24-48 hours</li>
+                            <li><i class="fas fa-exclamation-triangle"></i> Emergency: Use Discord @mention for urgent issues</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Lakeview Comms CAD</h3>
+                <p>Advanced Computer-Aided Dispatch system for Lakeview City Roleplay emergency services.</p>
+                <div class="lkvc-brand">
+                    <img src="https://ik.imagekit.io/tycncf0zq0/Lakeview%20City%20Roleplay.png?updatedAt=1762564831685" alt="LKVC" class="lkvc-logo">
+                    <span>Lakeview City Roleplay</span>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#overview">System Overview</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#getting-started">Getting Started</a></li>
+                    <li><a href="#technical">Technical Docs</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Training Materials</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Release Notes</a></li>
+                    <li><a href="#">System Status</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-discord"></i> Discord</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> Newsletter</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 Lakeview City Roleplay. All rights reserved. | Lakeview Comms CAD v1.0 BETA</p>
+            <p>This system contains sensitive law enforcement information. Unauthorized access is prohibited.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Scroll to target
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.getElementById('nav-links').classList.remove('active');
+                }
+            });
+        });
+
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre');
+                const textArea = document.createElement('textarea');
+                textArea.value = codeBlock.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Visual feedback
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
