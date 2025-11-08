@@ -276,6 +276,58 @@
             justify-content: center;
         }
 
+        /* Sign Out Success Screen */
+        .signout-success {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+            animation: successPulse 2s infinite;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .success-message {
+            color: var(--gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            max-width: 500px;
+        }
+
+        .countdown {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
         /* CAD App */
         .app-container {
             display: none;
@@ -368,6 +420,109 @@
             transform: translateY(-1px);
         }
 
+        /* Tools Button */
+        .tools-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(162, 22, 28, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tools-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(162, 22, 28, 0.6);
+        }
+
+        /* Tools Panel */
+        .tools-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            z-index: 100;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .tools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tools-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .close-tools {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-tools:hover {
+            color: var(--light);
+        }
+
+        .tools-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tool-option {
+            padding: 12px;
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-option:hover {
+            background: rgba(162, 22, 28, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tool-option i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
         /* Priority Alert */
         .priority-alert {
             position: fixed;
@@ -395,10 +550,32 @@
             50% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.8); }
         }
 
+        /* Signal Alert */
+        .signal-alert {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            z-index: 1000;
+            display: none;
+            animation: alertSlide 0.5s ease-out, signalFlash 1s infinite;
+        }
+
+        @keyframes signalFlash {
+            0%, 100% { box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.8); }
+        }
+
         /* Main Content */
         .main-content {
             display: grid;
-            grid-template-columns: 300px 1fr 300px;
+            grid-template-columns: 320px 1fr 320px;
             gap: 15px;
             padding: 15px;
             height: calc(100vh - 60px);
@@ -586,6 +763,99 @@
             color: var(--gray);
         }
 
+        /* Unit Assignment */
+        .unit-assignment {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .assignment-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .unit-search {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .unit-search input {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.85rem;
+        }
+
+        .unit-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .search-result {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-result:last-child {
+            border-bottom: none;
+        }
+
+        .search-result:hover {
+            background: var(--primary);
+        }
+
+        .unit-select {
+            width: 100%;
+            padding: 8px;
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .assign-btn {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .assign-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(162, 22, 28, 0.4);
+        }
+
         /* Unit List */
         .department-section {
             margin-bottom: 20px;
@@ -631,17 +901,12 @@
             border-radius: 8px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
-            cursor: grab;
         }
 
         .unit-item:hover {
             background: #252525;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .unit-item:active {
-            cursor: grabbing;
         }
 
         .unit-status {
@@ -898,12 +1163,6 @@
             background: var(--accent);
             border-radius: 8px;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .unit-tags.drag-over {
-            background: rgba(162, 22, 28, 0.1);
-            border: 2px dashed var(--primary);
         }
 
         .unit-tag {
@@ -997,7 +1256,7 @@
         .modal-content {
             background: var(--card-bg);
             border-radius: 12px;
-            width: 450px;
+            width: 500px;
             max-width: 90%;
             padding: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -1142,6 +1401,58 @@
         .update-option i {
             color: var(--primary);
             font-size: 1.1rem;
+        }
+
+        /* Signal Modal */
+        .signal-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .signal-input input {
+            flex: 1;
+            padding: 10px;
+            background: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .signal-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* 911 Guide Modal */
+        .guide-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+
+        .guide-category {
+            margin-bottom: 20px;
+        }
+
+        .guide-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+            color: var(--primary);
+        }
+
+        .guide-steps {
+            padding-left: 15px;
+        }
+
+        .guide-step {
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            line-height: 1.4;
         }
 
         /* Utility Classes */
@@ -1291,16 +1602,64 @@
                 <i class="fas fa-sign-out-alt"></i>
             </div>
             <h2 class="signout-title">Confirm Sign Out</h2>
-            <p class="signout-message">Your session has been logged successfully! Thank you for your shift, please close this tab.</p>
+            <p class="signout-message">Are you sure you want to sign out? Your shift will be logged and the system will close.</p>
             <div class="signout-actions">
                 <button class="btn btn-secondary" id="cancel-signout">Cancel</button>
-                <button class="btn btn-danger" id="confirm-signout">Close Tab</button>
+                <button class="btn btn-danger" id="confirm-signout">Confirm Sign Out</button>
             </div>
         </div>
     </div>
 
+    <!-- Sign Out Success Screen -->
+    <div class="signout-success" id="signout-success">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="success-title">Session Logged Successfully</h1>
+        <p class="success-message">Your session has been logged successfully! Thank you for your shift, this tab will close automatically in <span class="countdown" id="countdown">10</span> seconds.</p>
+    </div>
+
     <!-- Priority Alert -->
     <div class="priority-alert" id="priority-alert"></div>
+
+    <!-- Signal Alert -->
+    <div class="signal-alert" id="signal-alert"></div>
+
+    <!-- Tools Panel -->
+    <div class="tools-panel" id="tools-panel">
+        <div class="tools-header">
+            <div class="tools-title">Dispatcher Tools</div>
+            <button class="close-tools">&times;</button>
+        </div>
+        <div class="tools-options">
+            <div class="tool-option" data-tool="signal">
+                <i class="fas fa-broadcast-tower"></i>
+                <div>
+                    <div class="text-sm">Signal Activation</div>
+                    <div class="text-xs">Activate emergency signals</div>
+                </div>
+            </div>
+            <div class="tool-option" data-tool="supervisor">
+                <i class="fas fa-user-shield"></i>
+                <div>
+                    <div class="text-sm">Supervisor Request</div>
+                    <div class="text-xs">Request supervisor assistance</div>
+                </div>
+            </div>
+            <div class="tool-option" data-tool="guide">
+                <i class="fas fa-book-medical"></i>
+                <div>
+                    <div class="text-sm">911 Call Guide</div>
+                    <div class="text-xs">Emergency response protocols</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tools Button -->
+    <button class="tools-btn" id="tools-btn">
+        <i class="fas fa-tools"></i>
+    </button>
 
     <!-- Update Unit Modal -->
     <div class="modal" id="update-unit-modal">
@@ -1334,6 +1693,100 @@
             </div>
             <div class="form-actions">
                 <button type="button" class="btn btn-secondary" id="cancel-update">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signal Modal -->
+    <div class="modal" id="signal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Activate Signal</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="signal-input">
+                <input type="number" id="signal-number" placeholder="Enter signal number (e.g., 11, 100)" min="1" max="1000">
+                <button class="btn" id="activate-signal">Activate</button>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancel-signal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supervisor Request Modal -->
+    <div class="modal" id="supervisor-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Supervisor Request</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="supervisor-result">
+                <!-- Supervisor result will be displayed here -->
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancel-supervisor">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 911 Guide Modal -->
+    <div class="modal" id="guide-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">911 Call Guide</div>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="guide-container">
+                <div class="guide-category">
+                    <div class="guide-title">Medical Emergencies</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Choking:</strong> Ask if they can speak or cough. If not, instruct on back blows and abdominal thrusts.</div>
+                        <div class="guide-step">• <strong>Heart Attack:</strong> Have them sit down, loosen tight clothing. Ask if they have medication.</div>
+                        <div class="guide-step">• <strong>Seizure:</strong> Clear area of hard objects. Do not restrain. Time the seizure.</div>
+                        <div class="guide-step">• <strong>Bleeding:</strong> Apply direct pressure with clean cloth. Elevate injury if possible.</div>
+                        <div class="guide-step">• <strong>Allergic Reaction:</strong> Ask if they have an epinephrine auto-injector. Help them use it if available.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Violent Situations</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Active Shooter:</strong> Instruct to Run, Hide, Fight. Find cover, silence phones.</div>
+                        <div class="guide-step">• <strong>Domestic Violence:</strong> Keep caller calm. Ask if safe to talk. Get location and suspect description.</div>
+                        <div class="guide-step">• <strong>Kidnapping:</strong> Get vehicle description, direction of travel, last known location.</div>
+                        <div class="guide-step">• <strong>Hostage Situation:</strong> Keep caller hidden if possible. Gather information quietly.</div>
+                        <div class="guide-step">• <strong>Fight in Progress:</strong> Get number of people involved, weapons visible, location specifics.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Fire Emergencies</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Structure Fire:</strong> Confirm everyone is out. Do not re-enter building.</div>
+                        <div class="guide-step">• <strong>Vehicle Fire:</strong> Move at least 100 feet away. Warn about potential explosion.</div>
+                        <div class="guide-step">• <strong>Wildfire:</strong> Evacuate immediately. Close all windows and doors before leaving.</div>
+                        <div class="guide-step">• <strong>Electrical Fire:</strong> Do not use water. Use Class C fire extinguisher if available.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Traffic Incidents</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Major Collision:</strong> Check for injuries, fuel leaks, hazardous materials.</div>
+                        <div class="guide-step">• <strong>Vehicle in Water:</strong> Guide to escape through windows. Vehicle will float momentarily.</div>
+                        <div class="guide-step">• <strong>Rollover:</strong> Do not move injured persons unless in immediate danger.</div>
+                        <div class="guide-step">• <strong>Pedestrian Struck:</strong> Secure scene. Do not move victim. Control traffic if safe.</div>
+                    </div>
+                </div>
+                <div class="guide-category">
+                    <div class="guide-title">Psychological Crises</div>
+                    <div class="guide-steps">
+                        <div class="guide-step">• <strong>Suicide Threat:</strong> Keep caller talking. Remove means of self-harm if possible.</div>
+                        <div class="guide-step">• <strong>Mental Health Crisis:</strong> Speak calmly. Avoid sudden movements. Create safe space.</div>
+                        <div class="guide-step">• <strong>Panic Attack:</strong> Guide through deep breathing. Focus on present moment.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancel-guide">Close</button>
             </div>
         </div>
     </div>
@@ -1419,6 +1872,23 @@
                         <div class="unit-tags" id="assigned-units">
                             <!-- Assigned units will be added here -->
                         </div>
+                    </div>
+
+                    <div class="unit-assignment">
+                        <div class="assignment-title">
+                            <i class="fas fa-user-plus"></i>
+                            Assign Units
+                        </div>
+                        <div class="unit-search">
+                            <input type="text" id="unit-search" placeholder="Search for units...">
+                            <div class="search-results" id="search-results"></div>
+                        </div>
+                        <select class="unit-select" id="unit-select">
+                            <option value="">Select a unit to assign</option>
+                        </select>
+                        <button class="assign-btn" id="assign-btn">
+                            <i class="fas fa-plus"></i> Assign Unit
+                        </button>
                     </div>
 
                     <div class="panel-actions mt-15">
@@ -1619,7 +2089,8 @@
             selectedUnitStatus: '10-8',
             selectedDepartment: 'law-enforcement',
             activePrioritySituation: null,
-            selectedUnit: null
+            selectedUnit: null,
+            activeSignals: []
         };
 
         // DOM Elements
@@ -1632,9 +2103,15 @@
         const signoutModal = document.getElementById('signout-modal');
         const cancelSignoutBtn = document.getElementById('cancel-signout');
         const confirmSignoutBtn = document.getElementById('confirm-signout');
+        const signoutSuccess = document.getElementById('signout-success');
+        const countdownElement = document.getElementById('countdown');
         const displayUserId = document.getElementById('display-user-id');
         const shiftTimer = document.getElementById('shift-timer');
         const priorityAlert = document.getElementById('priority-alert');
+        const signalAlert = document.getElementById('signal-alert');
+        const toolsBtn = document.getElementById('tools-btn');
+        const toolsPanel = document.getElementById('tools-panel');
+        const closeToolsBtn = document.querySelector('.close-tools');
         const callList = document.getElementById('call-list');
         const unitList = document.getElementById('unit-list');
         const activeIncidentHeader = document.getElementById('active-incident-header');
@@ -1642,6 +2119,10 @@
         const narrativeInput = document.getElementById('narrative-input');
         const addNarrativeBtn = document.getElementById('add-narrative');
         const assignedUnits = document.getElementById('assigned-units');
+        const unitSearch = document.getElementById('unit-search');
+        const searchResults = document.getElementById('search-results');
+        const unitSelect = document.getElementById('unit-select');
+        const assignBtn = document.getElementById('assign-btn');
         const priorityBtn = document.getElementById('priority-btn');
         const newCallBtn = document.getElementById('new-call-btn');
         const newCallModal = document.getElementById('new-call-modal');
@@ -1656,6 +2137,15 @@
         const updateUnitModal = document.getElementById('update-unit-modal');
         const updateUnitId = document.getElementById('update-unit-id');
         const cancelUpdateBtn = document.getElementById('cancel-update');
+        const signalModal = document.getElementById('signal-modal');
+        const signalNumber = document.getElementById('signal-number');
+        const activateSignalBtn = document.getElementById('activate-signal');
+        const cancelSignalBtn = document.getElementById('cancel-signal');
+        const supervisorModal = document.getElementById('supervisor-modal');
+        const supervisorResult = document.getElementById('supervisor-result');
+        const cancelSupervisorBtn = document.getElementById('cancel-supervisor');
+        const guideModal = document.getElementById('guide-modal');
+        const cancelGuideBtn = document.getElementById('cancel-guide');
         const closeButtons = document.querySelectorAll('.close-modal');
 
         // Initialize the application
@@ -1674,6 +2164,8 @@
             signOutBtn.addEventListener('click', () => signoutModal.style.display = 'flex');
             cancelSignoutBtn.addEventListener('click', () => signoutModal.style.display = 'none');
             confirmSignoutBtn.addEventListener('click', handleSignOut);
+            toolsBtn.addEventListener('click', () => toolsPanel.style.display = 'block');
+            closeToolsBtn.addEventListener('click', () => toolsPanel.style.display = 'none');
             newCallBtn.addEventListener('click', () => newCallModal.style.display = 'flex');
             cancelCallBtn.addEventListener('click', () => newCallModal.style.display = 'none');
             newCallForm.addEventListener('submit', handleNewCall);
@@ -1687,6 +2179,13 @@
                 if (e.key === 'Enter') addNarrativeEntry();
             });
             cancelUpdateBtn.addEventListener('click', () => updateUnitModal.style.display = 'none');
+            activateSignalBtn.addEventListener('click', activateSignal);
+            cancelSignalBtn.addEventListener('click', () => signalModal.style.display = 'none');
+            cancelSupervisorBtn.addEventListener('click', () => supervisorModal.style.display = 'none');
+            cancelGuideBtn.addEventListener('click', () => guideModal.style.display = 'none');
+            assignBtn.addEventListener('click', assignUnitToCall);
+            unitSearch.addEventListener('input', handleUnitSearch);
+            unitSelect.addEventListener('change', handleUnitSelect);
 
             // Status option selection
             document.querySelectorAll('.status-option').forEach(option => {
@@ -1772,12 +2271,23 @@
                 });
             });
 
+            // Tool option selection
+            document.querySelectorAll('.tool-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const tool = this.getAttribute('data-tool');
+                    handleToolSelection(tool);
+                });
+            });
+
             closeButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     newCallModal.style.display = 'none';
                     addUnitModal.style.display = 'none';
                     priorityModal.style.display = 'none';
                     updateUnitModal.style.display = 'none';
+                    signalModal.style.display = 'none';
+                    supervisorModal.style.display = 'none';
+                    guideModal.style.display = 'none';
                 });
             });
 
@@ -1788,46 +2298,168 @@
                 if (event.target === priorityModal) priorityModal.style.display = 'none';
                 if (event.target === updateUnitModal) updateUnitModal.style.display = 'none';
                 if (event.target === signoutModal) signoutModal.style.display = 'none';
-            });
-
-            // Setup drag and drop
-            setupDragAndDrop();
-        }
-
-        // Setup drag and drop functionality
-        function setupDragAndDrop() {
-            const assignedUnitsContainer = document.getElementById('assigned-units');
-            
-            // Allow drop
-            assignedUnitsContainer.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                assignedUnitsContainer.classList.add('drag-over');
-            });
-            
-            assignedUnitsContainer.addEventListener('dragleave', () => {
-                assignedUnitsContainer.classList.remove('drag-over');
-            });
-            
-            // Handle drop
-            assignedUnitsContainer.addEventListener('drop', (e) => {
-                e.preventDefault();
-                assignedUnitsContainer.classList.remove('drag-over');
-                
-                const unitId = e.dataTransfer.getData('text/plain');
-                if (unitId && state.activeCall) {
-                    if (!state.activeCall.assignedUnits.includes(unitId)) {
-                        state.activeCall.assignedUnits.push(unitId);
-                        renderAssignedUnits();
-                        
-                        // Add narrative entry
-                        state.activeCall.narrative.push({
-                            timestamp: new Date(),
-                            text: `Unit ${unitId} assigned to incident via drag & drop.`
-                        });
-                        renderNarrativeLog();
-                    }
+                if (event.target === signalModal) signalModal.style.display = 'none';
+                if (event.target === supervisorModal) supervisorModal.style.display = 'none';
+                if (event.target === guideModal) guideModal.style.display = 'none';
+                if (!event.target.closest('.tools-panel') && !event.target.closest('.tools-btn')) {
+                    toolsPanel.style.display = 'none';
                 }
             });
+
+            // Close search results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.unit-search')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+            // Load initial data
+            loadInitialData();
+        }
+
+        // Handle unit search
+        function handleUnitSearch() {
+            const query = unitSearch.value.toLowerCase();
+            if (query.length === 0) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = state.units.filter(unit => 
+                unit.id.toLowerCase().includes(query) || 
+                unit.officer.toLowerCase().includes(query) ||
+                unit.rank.toLowerCase().includes(query)
+            );
+
+            searchResults.innerHTML = '';
+            if (results.length > 0) {
+                results.forEach(unit => {
+                    const resultElement = document.createElement('div');
+                    resultElement.className = 'search-result';
+                    resultElement.textContent = `Unit ${unit.id} - ${unit.officer} (${unit.rank})`;
+                    resultElement.addEventListener('click', () => {
+                        unitSelect.value = unit.id;
+                        unitSearch.value = '';
+                        searchResults.style.display = 'none';
+                    });
+                    searchResults.appendChild(resultElement);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        }
+
+        // Handle unit select
+        function handleUnitSelect() {
+            const selectedUnitId = unitSelect.value;
+            if (selectedUnitId) {
+                unitSearch.value = selectedUnitId;
+            }
+        }
+
+        // Assign unit to call
+        function assignUnitToCall() {
+            const unitId = unitSelect.value;
+            if (!unitId || !state.activeCall) return;
+
+            if (!state.activeCall.assignedUnits.includes(unitId)) {
+                state.activeCall.assignedUnits.push(unitId);
+                renderAssignedUnits();
+                
+                // Add narrative entry
+                state.activeCall.narrative.push({
+                    timestamp: new Date(),
+                    text: `Unit ${unitId} assigned to incident.`
+                });
+                renderNarrativeLog();
+
+                // Clear selection
+                unitSelect.value = '';
+                unitSearch.value = '';
+            }
+        }
+
+        // Handle tool selection
+        function handleToolSelection(tool) {
+            toolsPanel.style.display = 'none';
+            
+            switch(tool) {
+                case 'signal':
+                    signalModal.style.display = 'flex';
+                    break;
+                case 'supervisor':
+                    handleSupervisorRequest();
+                    break;
+                case 'guide':
+                    guideModal.style.display = 'flex';
+                    break;
+            }
+        }
+
+        // Activate signal
+        function activateSignal() {
+            const signalNum = signalNumber.value;
+            if (!signalNum) return;
+
+            state.activeSignals.push(signalNum);
+            
+            // Show signal alert
+            signalAlert.textContent = `Signal ${signalNum} Active`;
+            signalAlert.style.display = 'block';
+            
+            // Add narrative entry if there's an active call
+            if (state.activeCall) {
+                state.activeCall.narrative.push({
+                    timestamp: new Date(),
+                    text: `Signal ${signalNum} activated.`
+                });
+                renderNarrativeLog();
+            }
+
+            signalModal.style.display = 'none';
+            signalNumber.value = '';
+
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                signalAlert.style.display = 'none';
+                state.activeSignals = state.activeSignals.filter(s => s !== signalNum);
+            }, 10000);
+        }
+
+        // Handle supervisor request
+        function handleSupervisorRequest() {
+            const supervisors = state.units.filter(unit => 
+                ['Sergeant', 'Lieutenant', 'Captain', 'Commander', 'Chief', 'Deputy Chief', 'Assistant Chief', 'Battalion Chief'].includes(unit.rank) &&
+                unit.status === '10-8'
+            );
+
+            if (supervisors.length > 0) {
+                const randomSupervisor = supervisors[Math.floor(Math.random() * supervisors.length)];
+                supervisorResult.innerHTML = `
+                    <div class="text-center">
+                        <div class="success-icon" style="font-size: 2.5rem; margin-bottom: 15px;">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 style="margin-bottom: 10px;">Supervisor Assigned</h3>
+                        <p style="margin-bottom: 15px;">Unit ${randomSupervisor.id} - ${randomSupervisor.officer}</p>
+                        <p class="text-sm">${randomSupervisor.rank} has been notified and will respond to the request.</p>
+                    </div>
+                `;
+            } else {
+                supervisorResult.innerHTML = `
+                    <div class="text-center">
+                        <div class="success-icon" style="font-size: 2.5rem; margin-bottom: 15px; color: var(--danger);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3 style="margin-bottom: 10px;">No Supervisors Available</h3>
+                        <p style="margin-bottom: 15px;">There are no supervisors currently available or 10-8.</p>
+                        <p class="text-sm">Please inform the requesting unit that no supervisor is available at this time.</p>
+                    </div>
+                `;
+            }
+
+            supervisorModal.style.display = 'flex';
         }
 
         // Handle update actions
@@ -1844,6 +2476,7 @@
                         unit.status = newStatus;
                         unit.statusTime = new Date();
                         renderUnitList();
+                        updateUnitSelect();
                     }
                     break;
                 case 'location':
@@ -1857,6 +2490,7 @@
                     if (confirm(`Are you sure you want to remove Unit ${unit.id}?`)) {
                         state.units = state.units.filter(u => u.id !== state.selectedUnit);
                         renderUnitList();
+                        updateUnitSelect();
                     }
                     break;
             }
@@ -1953,26 +2587,38 @@
 
         // Handle sign out
         function handleSignOut() {
-            // Clear localStorage
-            localStorage.removeItem('lkv_user');
-            localStorage.removeItem('lkv_shift_start');
-            
-            // Reset state
-            state.user = null;
-            state.shiftStart = null;
-            state.calls = [];
-            state.units = [];
-            state.activeCall = null;
-            state.activePrioritySituation = null;
-            state.selectedUnit = null;
-            
-            // Show sign out message
             signoutModal.style.display = 'none';
-            cadApp.style.display = 'none';
-            loginScreen.style.display = 'flex';
             
-            // Reset form
-            loginForm.reset();
+            // Show loading for 5 seconds
+            setTimeout(() => {
+                // Clear localStorage
+                localStorage.removeItem('lkv_user');
+                localStorage.removeItem('lkv_shift_start');
+                
+                // Show success screen
+                cadApp.style.display = 'none';
+                signoutSuccess.style.display = 'flex';
+                
+                // Start countdown
+                let countdown = 10;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        // In a real application, this would close the tab
+                        // For demo purposes, we'll just show a message
+                        signoutSuccess.innerHTML = `
+                            <div class="success-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h1 class="success-title">Tab Closed</h1>
+                            <p class="success-message">In a real application, this tab would have closed automatically. You can now safely close this window.</p>
+                        `;
+                    }
+                }, 1000);
+            }, 5000);
         }
 
         // Load initial data
@@ -1981,6 +2627,18 @@
             // For now, we'll start with empty arrays
             renderCallList();
             renderUnitList();
+            updateUnitSelect();
+        }
+
+        // Update unit select dropdown
+        function updateUnitSelect() {
+            unitSelect.innerHTML = '<option value="">Select a unit to assign</option>';
+            state.units.forEach(unit => {
+                const option = document.createElement('option');
+                option.value = unit.id;
+                option.textContent = `Unit ${unit.id} - ${unit.officer} (${unit.status})`;
+                unitSelect.appendChild(option);
+            });
         }
 
         // Handle new call creation
@@ -2055,6 +2713,7 @@
             
             state.units.push(newUnit);
             renderUnitList();
+            updateUnitSelect();
             
             // Close modal and reset form
             addUnitModal.style.display = 'none';
@@ -2249,7 +2908,6 @@
         function createUnitElement(unit) {
             const unitElement = document.createElement('div');
             unitElement.className = 'unit-item';
-            unitElement.draggable = true;
             unitElement.dataset.id = unit.id;
             
             // Calculate time since status change
@@ -2290,16 +2948,6 @@
                     </button>
                 </div>
             `;
-            
-            // Add drag events
-            unitElement.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', unit.id);
-                unitElement.style.opacity = '0.5';
-            });
-            
-            unitElement.addEventListener('dragend', () => {
-                unitElement.style.opacity = '1';
-            });
             
             // Add update button event
             unitElement.querySelector('.update-btn').addEventListener('click', (e) => {
