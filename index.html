@@ -3,40 +3,80 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Thinking Shimmer</title>
+  <title>ChatGPT-style Thinking Shimmer + Typing</title>
   <style>
     :root{
       --bg: #0b0f19;
-      --bubble: #1a2233;
+      --panel: rgba(255,255,255,.06);
+      --panel-border: rgba(255,255,255,.10);
+      --text: #e8eeff;
+
+      --user: rgba(111, 180, 255, .16);
+      --user-border: rgba(111, 180, 255, .22);
+
+      --assistant: rgba(255,255,255,.07);
+      --assistant-border: rgba(255,255,255,.10);
+
       --shine-base: rgba(255,255,255,.10);
-      --shine-mid:  rgba(255,255,255,.28);
-      --text: #d7e2ff;
+      --shine-mid:  rgba(255,255,255,.30);
     }
 
+    *{ box-sizing:border-box; }
     body{
       margin:0;
       min-height:100vh;
-      display:grid;
-      place-items:center;
       background: radial-gradient(1200px 600px at 30% 10%, #162040, var(--bg));
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--text);
+      display:grid;
+      place-items:center;
+      padding:18px;
     }
 
-    .chat{
-      width:min(720px, 92vw);
-      padding:18px;
+    .app{
+      width:min(820px, 96vw);
+      height:min(720px, 92vh);
+      display:flex;
+      flex-direction:column;
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+    }
+
+    header{
+      padding:14px 16px;
+      border-bottom: 1px solid var(--panel-border);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: rgba(111,180,255,.7);
+      box-shadow: 0 0 18px rgba(111,180,255,.45);
+    }
+    header .title{ font-weight:650; letter-spacing:.2px; }
+    header .hint{ opacity:.72; font-size:13px; margin-left:auto; }
+
+    .messages{
+      flex:1;
+      overflow:auto;
+      padding:18px 14px;
       display:flex;
       flex-direction:column;
       gap:12px;
+      scroll-behavior:smooth;
     }
 
     .row{
       display:flex;
-      gap:10px;
       align-items:flex-end;
+      gap:10px;
     }
-
     .row.user{ justify-content:flex-end; }
     .row.assistant{ justify-content:flex-start; }
 
@@ -44,21 +84,37 @@
       max-width: 78%;
       padding:12px 14px;
       border-radius: 16px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid var(--assistant-border);
+      background: var(--assistant);
       box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      line-height: 1.35;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
     .bubble.user{
-      background: rgba(111, 180, 255, .14);
-      border-color: rgba(111, 180, 255, .18);
+      background: var(--user);
+      border-color: var(--user-border);
     }
 
-    /* --- SHIMMER "THINKING" BUBBLE --- */
-    .thinking{
-      background: var(--bubble);
-      border-color: rgba(255,255,255,.08);
+    /* message entrance animation (pop-in like chat apps) */
+    .bubble.pop-in{
+      animation: pop .18s ease-out both;
+      transform-origin: 80% 100%;
+    }
+    .row.assistant .bubble.pop-in{ transform-origin: 20% 100%; }
+
+    @keyframes pop{
+      from { transform: translateY(6px) scale(.985); opacity: 0; }
+      to   { transform: translateY(0)  scale(1);     opacity: 1; }
+    }
+
+    /* --- THINKING SHIMMER (left -> right shine) --- */
+    .bubble.thinking{
       width: min(420px, 78%);
+      padding: 12px 14px;
+      background: rgba(26,34,51,.85);
+      border-color: rgba(255,255,255,.08);
     }
 
     .lines{
@@ -66,16 +122,13 @@
       flex-direction:column;
       gap:10px;
     }
-
     .line{
       height: 12px;
       border-radius: 999px;
       background: rgba(255,255,255,.08);
       position: relative;
-      overflow: hidden;
+      overflow:hidden;
     }
-
-    /* shimmering shine that moves left -> right */
     .line::after{
       content:"";
       position:absolute;
@@ -89,45 +142,231 @@
         var(--shine-base) 65%,
         transparent 100%
       );
-      animation: shine 1.15s ease-in-out infinite;
+      animation: shine 1.05s ease-in-out infinite;
     }
-
-    /* different widths to look like real text */
     .w1{ width: 78%; }
     .w2{ width: 92%; }
     .w3{ width: 58%; }
-
-    /* slightly stagger the shine for a nicer feel */
-    .delay1::after{ animation-delay: .00s; }
-    .delay2::after{ animation-delay: .10s; }
-    .delay3::after{ animation-delay: .20s; }
+    .d1::after{ animation-delay: .00s; }
+    .d2::after{ animation-delay: .12s; }
+    .d3::after{ animation-delay: .24s; }
 
     @keyframes shine{
       0%   { transform: translateX(-120%); }
       100% { transform: translateX(120%); }
     }
 
-    /* respect reduced motion */
+    /* --- assistant typing caret --- */
+    .caret{
+      display:inline-block;
+      width: 9px;
+      margin-left: 2px;
+      opacity: .9;
+      transform: translateY(1px);
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink{
+      0%, 49%{ opacity: 1; }
+      50%, 100%{ opacity: 0; }
+    }
+
+    /* composer */
+    form{
+      border-top: 1px solid var(--panel-border);
+      padding: 12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(0,0,0,.12);
+    }
+    input{
+      flex:1;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    input::placeholder{ color: rgba(232,238,255,.6); }
+
+    button{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(111, 180, 255, .18);
+      color: var(--text);
+      cursor:pointer;
+      font-weight: 650;
+      transition: transform .06s ease, opacity .2s ease;
+    }
+    button:active{ transform: translateY(1px); }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
+
+    /* reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .line::after{ animation: none; opacity:.35; transform:none; }
+      .bubble.pop-in{ animation:none; }
+      .line::after{ animation:none; opacity:.35; transform:none; }
+      .caret{ animation:none; opacity:1; }
+      .messages{ scroll-behavior:auto; }
     }
   </style>
 </head>
 <body>
-  <div class="chat">
-    <div class="row user">
-      <div class="bubble user">yo can you show the “thinking” shine?</div>
-    </div>
+  <div class="app">
+    <header>
+      <div class="dot"></div>
+      <div class="title">Mini Chat</div>
+      <div class="hint">Type: “what is discord”</div>
+    </header>
 
-    <div class="row assistant">
-      <div class="bubble thinking" aria-label="Assistant is thinking">
-        <div class="lines">
-          <div class="line w2 delay1"></div>
-          <div class="line w1 delay2"></div>
-          <div class="line w3 delay3"></div>
-        </div>
-      </div>
-    </div>
+    <div id="messages" class="messages" aria-live="polite" aria-relevant="additions"></div>
+
+    <form id="composer" autocomplete="off">
+      <input id="input" placeholder="Send a message…" />
+      <button id="send" type="submit">Send</button>
+    </form>
   </div>
+
+  <script>
+    const messagesEl = document.getElementById("messages");
+    const form = document.getElementById("composer");
+    const input = document.getElementById("input");
+    const sendBtn = document.getElementById("send");
+
+    const THINKING_MS = 2000;         // 2 seconds “thinking”
+    const TYPE_SPEED_MS = 18;         // typing speed (lower = faster)
+
+    function scrollToBottom() {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function addRow(role) {
+      const row = document.createElement("div");
+      row.className = `row ${role}`;
+      messagesEl.appendChild(row);
+      return row;
+    }
+
+    function addBubble(row, role, text) {
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${role} pop-in`;
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      scrollToBottom();
+      return bubble;
+    }
+
+    function addThinkingBubble() {
+      const row = addRow("assistant");
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble thinking pop-in";
+      bubble.setAttribute("aria-label", "Assistant is thinking");
+
+      bubble.innerHTML = `
+        <div class="lines">
+          <div class="line w2 d1"></div>
+          <div class="line w1 d2"></div>
+          <div class="line w3 d3"></div>
+        </div>
+      `;
+
+      row.appendChild(bubble);
+      scrollToBottom();
+      return { row, bubble };
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function typeInto(bubble, fullText) {
+      bubble.textContent = ""; // start empty
+
+      const textSpan = document.createElement("span");
+      const caret = document.createElement("span");
+      caret.className = "caret";
+      caret.textContent = "▍";
+
+      bubble.appendChild(textSpan);
+      bubble.appendChild(caret);
+
+      // type character by character
+      for (let i = 0; i < fullText.length; i++) {
+        textSpan.textContent += fullText[i];
+        scrollToBottom();
+        await sleep(TYPE_SPEED_MS);
+      }
+
+      // remove caret at the end
+      caret.remove();
+    }
+
+    function getAssistantReply(userText) {
+      const t = userText.trim().toLowerCase();
+
+      if (t.includes("what is discord") || t === "discord" || t.includes("what is dsicord")) {
+        return (
+`Discord is a communication app where people chat in text, voice, and video—usually in “servers” (communities) that contain different channels.
+
+People use it for gaming groups, school clubs, friend groups, and work communities. You can join public servers or create a private one and invite people.`
+        );
+      }
+
+      // fallback response
+      return (
+`Got it. If you type “what is discord”, I’ll answer that and you’ll see the 2-second shimmer thinking animation + typing effect.`
+      );
+    }
+
+    async function handleSend(text) {
+      // user message
+      const userRow = addRow("user");
+      addBubble(userRow, "user", text);
+
+      // assistant thinking shimmer (2 seconds)
+      const thinking = addThinkingBubble();
+
+      // lock composer while “thinking”
+      input.disabled = true;
+      sendBtn.disabled = true;
+
+      await sleep(THINKING_MS);
+
+      // remove thinking bubble
+      thinking.row.remove();
+
+      // assistant message types in
+      const assistantRow = addRow("assistant");
+      const assistantBubble = document.createElement("div");
+      assistantBubble.className = "bubble pop-in";
+      assistantRow.appendChild(assistantBubble);
+      scrollToBottom();
+
+      const reply = getAssistantReply(text);
+      await typeInto(assistantBubble, reply);
+
+      // unlock composer
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+      handleSend(text);
+    });
+
+    // Seed with a first assistant message (optional)
+    (function seed(){
+      const row = addRow("assistant");
+      addBubble(row, "assistant", "Send “what is discord” and I’ll do the shimmer thinking animation, then type the reply.");
+    })();
+  </script>
 </body>
 </html>
