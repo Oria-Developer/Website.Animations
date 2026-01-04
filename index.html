@@ -3,110 +3,110 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GBT Animation Cards Library</title>
+  <title>GBT Animation Cards</title>
   <style>
     :root{
-      --bg0:#070a12;
-      --bg1:#0b1020;
-      --panel:rgba(255,255,255,.06);
-      --panel2:rgba(255,255,255,.08);
-      --border:rgba(255,255,255,.10);
-      --text:#e8eeff;
-      --muted:rgba(232,238,255,.72);
-      --accent:rgba(111,180,255,.55);
+      --bg:#0b0f19;
+      --card:#121a2a;
+      --card2:#0f1626;
+      --border:rgba(255,255,255,.14);
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.72);
+      --accent:rgba(111,180,255,.65);
 
       --shine-base: rgba(255,255,255,.10);
       --shine-mid:  rgba(255,255,255,.34);
     }
 
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
     body{
       margin:0;
-      background:
-        radial-gradient(1000px 700px at 25% 5%, #162a5a, transparent 55%),
-        radial-gradient(900px 650px at 85% 25%, #2a1848, transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
+      background: radial-gradient(1200px 600px at 25% 5%, #18295c, transparent 55%),
+                  radial-gradient(900px 650px at 85% 25%, #3a1a4b, transparent 55%),
+                  linear-gradient(180deg, #0c1223, var(--bg));
       color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      padding: 18px;
-      display:grid;
-      place-items:center;
     }
 
-    /* Pause all animations */
-    body.gbt-paused *{ animation-play-state: paused !important; }
-
-    .app{
-      width:min(980px, 96vw);
-      height:min(820px, 92vh);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--panel);
-      overflow:hidden;
-      box-shadow: 0 30px 90px rgba(0,0,0,.45);
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 5;
       backdrop-filter: blur(10px);
-      display:flex;
-      flex-direction:column;
+      background: rgba(10,14,25,.72);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .wrap{
+      width:min(980px, 96vw);
+      margin: 0 auto;
+      padding: 14px 10px;
     }
 
     .top{
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.07);
       display:flex;
       gap:12px;
-      align-items:flex-start;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
     }
 
     .brand{
       display:flex;
       gap:10px;
       align-items:center;
-      min-width: 220px;
     }
     .pulse{
-      width:10px; height:10px; border-radius:50%;
-      background: rgba(111,180,255,.85);
+      width:10px;height:10px;border-radius:50%;
+      background: var(--accent);
       box-shadow: 0 0 18px rgba(111,180,255,.45);
+      animation: pulseDot 1.1s ease-out infinite;
     }
-    .title{ font-weight:800; letter-spacing:.2px; }
-    .subtitle{
-      margin-top: 3px;
+    @keyframes pulseDot{
+      0%   { transform: scale(.95); box-shadow: 0 0 0 0 rgba(111,180,255,.45); }
+      70%  { transform: scale(1.0); box-shadow: 0 0 0 10px rgba(111,180,255,0); }
+      100% { transform: scale(.95); box-shadow: 0 0 0 0 rgba(111,180,255,0); }
+    }
+
+    h1{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:.2px;
+      font-weight: 850;
+    }
+    .sub{
+      margin: 2px 0 0;
       font-size: 12px;
       color: var(--muted);
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     .controls{
-      margin-left:auto;
       display:flex;
       gap:10px;
       align-items:center;
       flex-wrap:wrap;
-      justify-content:flex-end;
     }
 
     .btn{
       border: 1px solid var(--border);
-      background: rgba(0,0,0,.16);
+      background: rgba(0,0,0,.18);
       color: var(--text);
       padding: 10px 12px;
       border-radius: 12px;
       cursor:pointer;
-      font-weight: 750;
+      font-weight: 800;
       font-size: 13px;
-      transition: transform .06s ease, opacity .2s ease, background .2s ease;
       user-select:none;
     }
-    .btn:active{ transform: translateY(1px); }
     .btn.primary{
       background: rgba(111,180,255,.18);
-      border-color: rgba(111,180,255,.22);
+      border-color: rgba(111,180,255,.25);
     }
 
     .search{
       width: 260px;
-      max-width: 60vw;
+      max-width: 70vw;
       padding: 10px 12px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,.12);
@@ -115,64 +115,60 @@
       outline:none;
       font-size: 13px;
     }
-    .search::placeholder{ color: rgba(232,238,255,.55); }
+    .search::placeholder{ color: rgba(234,240,255,.55); }
 
-    /* Scroll area */
-    .scroll{
-      flex:1;
-      overflow:auto;
-      padding: 14px;
+    main .wrap{ padding-top: 14px; padding-bottom: 40px; }
+
+    .cards{
       display:flex;
       flex-direction:column;
       gap: 12px;
     }
 
-    /* Cards */
     .card{
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.05);
+      background: linear-gradient(180deg, var(--card), var(--card2));
       border-radius: 16px;
       overflow:hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
     }
 
     .card-h{
       padding: 12px 12px 10px;
       display:flex;
-      gap:10px;
-      align-items:flex-start;
       justify-content:space-between;
-      border-bottom: 1px solid rgba(255,255,255,.07);
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      align-items:flex-start;
     }
-
     .card-title{
       margin:0;
       font-size: 13px;
-      font-weight: 850;
+      font-weight: 900;
       letter-spacing:.2px;
     }
     .card-note{
       margin:4px 0 0;
-      color: var(--muted);
       font-size: 12px;
+      color: var(--muted);
       line-height: 1.3;
-      max-width: 72ch;
     }
 
-    .badges{
+    .tags{
       display:flex;
       gap:8px;
       align-items:center;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
-    .badge{
+    .tag{
       font-size: 11px;
-      color: rgba(232,238,255,.86);
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
       padding: 6px 8px;
       border-radius: 999px;
       white-space:nowrap;
+      color: rgba(234,240,255,.88);
     }
 
     .demo{
@@ -182,52 +178,24 @@
       align-items:center;
       justify-content:center;
       gap: 10px;
-    }
-
-    .demo.clickable{
       cursor:pointer;
     }
+    .demo:hover{ outline: 1px solid rgba(111,180,255,.25); outline-offset: -1px; }
 
-    .code{
-      padding: 0 12px 12px;
-    }
-
-    pre{
-      margin:0;
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 12px;
-      padding: 10px 10px;
-      overflow:auto;
-      font-size: 12px;
-      line-height: 1.35;
-      color: rgba(232,238,255,.92);
-    }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
-
-    .card-actions{
-      margin-top: 8px;
-      display:flex;
-      gap: 8px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
-
-    /* ====== shared demo primitive ====== */
     .bubble{
-      max-width: 520px;
+      max-width: 560px;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.07);
       padding: 12px 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.22);
       line-height: 1.35;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
       white-space: pre-wrap;
     }
 
-    /* ====== ANIMATIONS ====== */
+    /* ===== animations ===== */
 
-    /* A) pop-in */
+    /* Pop-in */
     .anim-pop{
       animation: pop .18s ease-out both;
       transform-origin: 25% 100%;
@@ -237,22 +205,16 @@
       to   { transform: translateY(0)  scale(1);     opacity: 1; }
     }
 
-    /* B) slide-in (left/right) */
+    /* Slide-in left/right */
     .anim-slide-left{ animation: slideL .22s ease-out both; }
     .anim-slide-right{ animation: slideR .22s ease-out both; }
-    @keyframes slideL{
-      from{ transform: translateX(-10px); opacity: 0; }
-      to  { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideR{
-      from{ transform: translateX(10px); opacity: 0; }
-      to  { transform: translateX(0); opacity: 1; }
-    }
+    @keyframes slideL{ from{ transform: translateX(-10px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+    @keyframes slideR{ from{ transform: translateX(10px); opacity:0; }  to{ transform:translateX(0); opacity:1; } }
 
-    /* C) thinking shimmer skeleton (left -> right shine) */
+    /* Shimmer skeleton (left->right shine) */
     .skel{
-      width: min(520px, 90%);
-      background: rgba(26,34,51,.85);
+      width: min(560px, 92%);
+      background: rgba(26,34,51,.90);
       border-color: rgba(255,255,255,.08);
     }
     .skel-lines{ display:flex; flex-direction:column; gap:10px; width:100%; }
@@ -260,7 +222,7 @@
       height: 12px;
       border-radius: 999px;
       background: rgba(255,255,255,.08);
-      position: relative;
+      position:relative;
       overflow:hidden;
     }
     .skel-line::after{
@@ -279,8 +241,8 @@
       animation: shine 1.05s ease-in-out infinite;
     }
     @keyframes shine{
-      0%   { transform: translateX(-120%); }
-      100% { transform: translateX(120%); }
+      0%{ transform: translateX(-120%); }
+      100%{ transform: translateX(120%); }
     }
     .w92{ width:92%; }
     .w78{ width:78%; }
@@ -289,44 +251,328 @@
     .d1::after{ animation-delay: .12s; }
     .d2::after{ animation-delay: .24s; }
 
-    /* D) typing dots (bounce) */
+    /* Typing dots (bounce) */
     .typing{
       display:inline-flex;
-      gap: 6px;
+      gap:6px;
       padding: 10px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.07);
       align-items:center;
     }
     .typing .dot{
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: rgba(232,238,255,.9);
-      opacity: .35;
+      width:7px;height:7px;border-radius:50%;
+      background: rgba(234,240,255,.92);
+      opacity:.35;
       animation: dotBounce 1.0s infinite;
     }
     .typing .dot:nth-child(2){ animation-delay:.12s; }
     .typing .dot:nth-child(3){ animation-delay:.24s; }
     @keyframes dotBounce{
-      0%, 80%, 100% { transform: translateY(0); opacity: .35; }
-      40% { transform: translateY(-4px); opacity: 1; }
+      0%,80%,100%{ transform:translateY(0); opacity:.35; }
+      40%{ transform:translateY(-4px); opacity:1; }
     }
 
-    /* E) wave dots (alt typing) */
+    /* Wave dots */
     .wave{
       display:inline-flex;
-      gap: 6px;
-      align-items:flex-end;
+      gap:6px;
       padding: 10px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.07);
+      align-items:flex-end;
     }
     .wave span{
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(232,238,255,.85);
+      width:6px;height:6px;border-radius:50%;
+      background: rgba(234,240,255,.88);
+      opacity:.8;
       animation: wave 1.1s ease-in-out infinite;
-      opacity: .8;
     }
     .wave span:nth-child(2){ animation-delay:.12s; }
+    .wave span:nth-child(3){ animation-delay:.24s; }
+    @keyframes wave{
+      0%,100%{ transform:translateY(0); opacity:.45; }
+      50%{ transform:translateY(-6px); opacity:1; }
+    }
+
+    /* Blinking caret */
+    .caret{
+      display:inline-block;
+      width: 9px;
+      margin-left: 3px;
+      transform: translateY(1px);
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink{
+      0%,49%{ opacity:1; }
+      50%,100%{ opacity:0; }
+    }
+
+    /* Shimmer text */
+    .shimmer-text{
+      font-weight: 900;
+      letter-spacing:.2px;
+      background: linear-gradient(
+        90deg,
+        rgba(234,240,255,.20) 0%,
+        rgba(234,240,255,.98) 50%,
+        rgba(234,240,255,.20) 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShimmer 1.1s ease-in-out infinite;
+    }
+    @keyframes textShimmer{
+      0%{ background-position: 0% 50%; }
+      100%{ background-position: 100% 50%; }
+    }
+
+    /* Spinner */
+    .spinner{
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,.16);
+      border-top-color: rgba(234,240,255,.92);
+      animation: spin .75s linear infinite;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    /* Progress bar */
+    .bar{
+      width: min(560px, 92%);
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+      position:relative;
+    }
+    .bar::after{
+      content:"";
+      position:absolute;
+      top:0; bottom:0;
+      width: 40%;
+      left: -40%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(111,180,255,.75), transparent);
+      animation: barMove 1.05s ease-in-out infinite;
+    }
+    @keyframes barMove{
+      0%{ left:-40%; }
+      100%{ left:100%; }
+    }
+
+    /* Pause switch */
+    body.paused *{ animation-play-state: paused !important; }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ animation:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">
+          <div class="pulse" aria-hidden="true"></div>
+          <div>
+            <h1>GBT Animation Cards (scroll down)</h1>
+            <div class="sub">Click any card to replay its animation. Use Search to filter.</div>
+          </div>
+        </div>
+        <div class="controls">
+          <input id="search" class="search" placeholder="Search: typing, shimmer, spinner..." />
+          <button id="pause" class="btn primary" type="button">Pause</button>
+          <button id="replayAll" class="btn" type="button">Replay all</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="cards" id="cards">
+
+        <section class="card" data-tags="pop in appear message">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Message pop-in</p>
+              <p class="card-note">When a new chat bubble appears.</p>
+            </div>
+            <div class="tags"><span class="tag">.anim-pop</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="bubble anim-pop">Hello — this popped in.</div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="slide in left right send receive">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Slide in (left/right)</p>
+              <p class="card-note">Common send/receive entry motion.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">.anim-slide-left</span>
+              <span class="tag">.anim-slide-right</span>
+            </div>
+          </div>
+          <div class="demo" data-demo style="justify-content:space-between; width:100%;">
+            <div class="bubble anim-slide-left" style="max-width:46%;">Assistant message</div>
+            <div class="bubble anim-slide-right" style="max-width:46%; background: rgba(111,180,255,.16); border-color: rgba(111,180,255,.22);">User message</div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="thinking shimmer skeleton shine left to right">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Thinking shimmer (left → right shine)</p>
+              <p class="card-note">The “shining” thinking state.</p>
+            </div>
+            <div class="tags"><span class="tag">.skel</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="bubble skel">
+              <div class="skel-lines">
+                <div class="skel-line w92 d0"></div>
+                <div class="skel-line w78 d1"></div>
+                <div class="skel-line w58 d2"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="typing dots bounce indicator">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Typing dots (bounce)</p>
+              <p class="card-note">Classic 3-dot typing indicator.</p>
+            </div>
+            <div class="tags"><span class="tag">.typing</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="typing" aria-label="Typing">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="typing dots wave indicator">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Typing dots (wave)</p>
+              <p class="card-note">Alternate typing feel.</p>
+            </div>
+            <div class="tags"><span class="tag">.wave</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="wave" aria-label="Typing">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="caret blinking streaming">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Blinking caret</p>
+              <p class="card-note">Used while streaming/typewriter text.</p>
+            </div>
+            <div class="tags"><span class="tag">.caret</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="bubble">Generating response<span class="caret">▍</span></div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="thinking text shimmer">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Shimmer “Thinking…” text</p>
+              <p class="card-note">A text-only thinking indicator.</p>
+            </div>
+            <div class="tags"><span class="tag">.shimmer-text</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="shimmer-text">Thinking…</div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="spinner loading">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Spinner</p>
+              <p class="card-note">Simple circular loader.</p>
+            </div>
+            <div class="tags"><span class="tag">.spinner</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="spinner" aria-label="Loading"></div>
+          </div>
+        </section>
+
+        <section class="card" data-tags="progress bar indeterminate loading">
+          <div class="card-h">
+            <div>
+              <p class="card-title">Indeterminate progress bar</p>
+              <p class="card-note">Great when you don’t know the percent.</p>
+            </div>
+            <div class="tags"><span class="tag">.bar</span></div>
+          </div>
+          <div class="demo" data-demo>
+            <div class="bar" aria-label="Loading"></div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const cardsEl = document.getElementById("cards");
+    const pauseBtn = document.getElementById("pause");
+    const replayAllBtn = document.getElementById("replayAll");
+    const searchEl = document.getElementById("search");
+
+    function replayDemo(demo){
+      // restart CSS animations by cloning the demo contents
+      const clone = demo.cloneNode(true);
+      demo.replaceWith(clone);
+
+      // reattach click handler
+      clone.addEventListener("click", () => replayDemo(clone));
+    }
+
+    // Click any demo to replay
+    document.querySelectorAll("[data-demo]").forEach(demo => {
+      demo.addEventListener("click", () => replayDemo(demo));
+      demo.title = "Click to replay";
+    });
+
+    replayAllBtn.addEventListener("click", () => {
+      document.querySelectorAll("[data-demo]").forEach(replayDemo);
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      document.body.classList.toggle("paused");
+      pauseBtn.textContent = document.body.classList.contains("paused") ? "Resume" : "Pause";
+    });
+
+    searchEl.addEventListener("input", () => {
+      const q = searchEl.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        const tags = (card.getAttribute("data-tags") || "").toLowerCase();
+        const title = (card.querySelector(".card-title")?.textContent || "").toLowerCase();
+        const note  = (card.querySelector(".card-note")?.textContent || "").toLowerCase();
+        const ok = !q || tags.includes(q) || title.includes(q) || note.includes(q);
+        card.style.display = ok ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
